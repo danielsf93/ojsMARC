@@ -465,6 +465,9 @@
 </script>
 <hr>TESTES:<br>
 
+
+<hr>
+
 {assign var="idiomas" value=[
     'ar' => 'Árabe', 'bg' => 'Búlgaro', 'ca' => 'Catalão', 'ckb' => 'Curdo',
     'cs' => 'Tcheco', 'da' => 'Dinamarquês', 'de' => 'Alemão', 'el' => 'Grego',
@@ -485,6 +488,8 @@
 <b>Título no idioma de submissão:</b> {$publication->getLocalizedTitle('primaryLocale')}<br>
 
 <p>Nome da revista: {$currentContext->getLocalizedName()}</p>
+ISSN Online: {$currentContext->getData('onlineIssn')}<br>
+ISSN Impresso: {$currentContext->getData('printIssn')}<br>
 Idioma da revista: {$primaryLocale}<br>
 Idioma atual: {$currentLocale}<br>
 a{$publication->getLocalizedTitle(null, 'html')|strip_unsafe_html}b<br>
@@ -509,6 +514,7 @@ a{$publication->getLocalizedTitle(null, 'html')|strip_unsafe_html}b<br>
 {assign var=submissionPages value=$publication->getData('pages')}
 <b>Páginas: </b>{$submissionPages|escape}<br>
 <b>Edição: </b>{$issue->getIssueIdentification()}<br>
+<b>Link da edição: </b>{url page="issue" op="view" path=$issue->getBestIssueId()}<br>
 <b>Seção: </b>{$section->getLocalizedTitle()|escape}<br>
 <b>Categoria: </b>{foreach from=$categories item=category}{$category->getLocalizedTitle()|escape};{/foreach}<br>
 <b>Idioma: </b><br>
