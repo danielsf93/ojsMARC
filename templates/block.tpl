@@ -1,12 +1,6 @@
-{**
- * plugins/blocks/ojsMARC/block.tpl
- *
- * Copyright (c) 2014-2021 Simon Fraser University
- * Copyright (c) 2003-2021 John Willinsky
- * Distributed under the GNU GPL v3. For full terms see the file docs/COPYING.
- *
- * Common site sidebar menu -- "Developed By" block.
- *}{if isset($publication)}
+{*/plugins/blocks/ojsMARC/templates/block.tpl*}
+
+{if isset($publication)}
 
 	<div class="marc">  
       
@@ -15,20 +9,21 @@
 
 {* Organizando a Informação *}
 
-    {assign var="dataFormatada" value=$smarty.now|date_format:"%Y%m%d%H%M%S.0"}
-    {assign var="zeroZeroCinco" value="$dataFormatada"}
+{assign var="dataFormatada" value=$smarty.now|date_format:"%Y%m%d%H%M%S.0"}
 
-    {assign var="zeroZeroOito" value="      s2023    bl            000 0 por d"}
+{assign var="zeroZeroCinco" value="$dataFormatada"}
+
+{assign var="zeroZeroOito" value="      s2023    bl            000 0 por d"}
 
     
         
-    {assign var="zeroDoisQuatro" value="a{$publication->getStoredPubId('doi')|escape}2DOI"}
+{assign var="zeroDoisQuatro" value="a{$publication->getStoredPubId('doi')|escape}2DOI"}
 
-    {assign var="zeroQuatroZero" value="  aUSP/ABCD0 "}
+{assign var="zeroQuatroZero" value="  aUSP/ABCD0 "}
 
-    {assign var="zeroQuatroUm" value="apor  "}
+{assign var="zeroQuatroUm" value="apor  "}
 
-    {assign var="zeroQuatroQuatro" value="abl1 "}
+{assign var="zeroQuatroQuatro" value="abl1 "}
 
 
      {* Obter Primeiro Autor *}
@@ -61,13 +56,13 @@
 {/foreach}
 
 
-    {assign var="doisQuatroCinco" value="10a{$publication->getLocalizedFullTitle()|escape}h[recurso eletrônico]  "}
+{assign var="doisQuatroCinco" value="10a{$publication->getLocalizedFullTitle()|escape}h[recurso eletrônico]  "}
 
 
 {assign var="doisMeiaZero" value="a LOCALb{$holder}c{$publication->getData('copyrightYear')}0 "}
 
 
-    {assign var="cincoZeroZero" value="aDisponível em: https://{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}. Acesso em: {$smarty.now|date_format:"%d.%m.%Y"}"}
+{assign var="cincoZeroZero" value="aDisponível em: https://{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}. Acesso em: {$smarty.now|date_format:"%d.%m.%Y"}"}
 
 {* Demais autores texto*}
 {assign var="additionalAuthors" value=[]}
@@ -95,19 +90,8 @@
 {/foreach}
 
    
-    {assign var="oitoCincoMeiaA" value="4 zClicar sobre o botão para acesso ao texto completouhttps://doi.org/{$publication->getStoredPubId('doi')|escape}3DOI"}
+{assign var="oitoCincoMeiaA" value="4 zClicar sobre o botão para acesso ao texto completouhttps://doi.org/{$publication->getStoredPubId('doi')|escape}3DOI"}
 
-{assign var="linkDownload" value=""}
-{if $primaryGalleys}
-    {foreach from=$primaryGalleys item=galley}
-        {if $galley->getFileType() == 'application/pdf'}
-            {assign var="publicationId" value=$publication->getId()}
-            {assign var="galleyId" value=$galley->getId()}
-            {assign var="linkDownload" value="{url page='article' op='view' path=$publicationId|to_array:$galleyId}"}
-            {break} {* Para após o primeiro PDF ser encontrado *}
-        {/if}
-    {/foreach}
-{/if}
 
 
 
@@ -128,7 +112,7 @@
 
 
 {* Calculando o comprimento da variável $rec024 *}
-{assign var="rec024POS" value=$rec020CAR + $rec020POS}
+{assign var="rec024POS" value=$rec005CAR + $rec005POS}
 {assign var="rec024CAR" value=sprintf('%04d', strlen($zeroDoisQuatro) + 3)}
 {assign var="rec024" value="024"|cat:$rec024CAR|cat:sprintf('%05d', $rec024POS)}
 
@@ -168,17 +152,6 @@
 {assign var="rec500" value="500"|cat:$rec500CAR|cat:sprintf('%05d', $rec500POS - 3)}
 
 
-
-
-
-
-
-
-
-
-
-
-
 {assign var="numAutoresAdicionais" value=count($additionalAuthors)}
 {assign var="rec700All" value=''} 
 
@@ -208,19 +181,6 @@
 {/foreach}
 
 {assign var="rec700All" value=str_replace(" ", "", $rec700All)}
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 {assign var="additionalAuthorsExporter" value=""}
@@ -258,16 +218,6 @@
 {assign var="rec7uuAll" value=str_replace(" ", "", $rec7uuAll)}
 
 
-
-
-
-
-
-
-
-
-
-
 {assign var="rec856APOS" value=$rec500CAR + $rec500POS}
 {assign var="rec856ACAR" value=sprintf('%04d', strlen($oitoCincoMeiaA) - 1)}
 
@@ -279,7 +229,7 @@
 {assign var="rec856A" value="856"|cat:$rec856ACAR|cat:sprintf('%05d', $rec856APOS - 3)}
 
 
-{assign var="rec945POS" value=$rec856BCAR + $rec856BPOS}
+{assign var="rec945POS" value=$rec856ACAR + $rec856APOS}
 {assign var="rec945CAR" value=sprintf('%04d', strlen($noveQuatroCinco) + 1)}
 {assign var="rec945" value="945"|cat:$rec945CAR|cat:sprintf('%05d', $rec945POS - 3)}
 
@@ -290,10 +240,7 @@
 
  
     <button id="downloadButton" class="botao">Baixar Registro MARC</button>
-	
-
 <style>
- 
     #downloadButton {
     font-weight: bold;
     padding: 10px 20px; /* Espaçamento interno */
@@ -304,26 +251,20 @@
     cursor: pointer; /* Cursor ao passar por cima */
     transition: background-color 0.3s ease; /* Transição suave da cor de fundo */
 }
-
 #downloadButton:hover {
     background-color: #055a85; /* Mudar a cor de fundo ao passar o mouse */
-}
-
-   
+}   
 </style>
-
 {$authors=$publication->getData('authors')}
 {$totalAuthors = $authors|@count}
 {assign var="totalautores" value=22000193+($totalAuthors*12)}
 {assign var="totalcaracteres" value=sprintf('%05d', strlen($zeroZeroCinco) + strlen($zeroZeroOito) + strlen($zeroDoisQuatro) + strlen($zeroQuatroZero) + strlen($zeroQuatroUm) + strlen($zeroQuatroQuatro) + strlen($umZeroZero) + strlen($doisQuatroCinco) + strlen($doisMeiaZero) + strlen($cincoZeroZero) + strlen($additionalAuthorsExport) + strlen($oitoCincoMeiaA) + strlen($noveQuatroCinco) + 169)}
-
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         var downloadButton = document.getElementById('downloadButton');
         downloadButton.addEventListener('click', function() {
             var text = "{$totalcaracteres}nam {$totalautores}a 4500 {$rec005|escape:'javascript'}{$rec008|escape:'javascript'}{$rec024|escape:'javascript'}{$rec040|escape:'javascript'}{$rec041|escape:'javascript'}{$rec044|escape:'javascript'}{$rec100|escape:'javascript'}{$rec245|escape:'javascript'}{$rec260|escape:'javascript'}{$rec500|escape:'javascript'}{$rec7uuAll|escape:'javascript'}{$recSetAll|escape:'javascript'}{$rec856A|escape:'javascript'}{$rec945|escape:'javascript'}{$zeroZeroCinco|escape:'javascript'}{$zeroZeroOito|escape:'javascript'}{$zeroDoisQuatro|escape:'javascript'}{$zeroQuatroZero|escape:'javascript'}{$zeroQuatroUm|escape:'javascript'}{$zeroQuatroQuatro|escape:'javascript'}{$umZeroZero|escape:'javascript'}{$doisQuatroCinco|escape:'javascript'}{$doisMeiaZero|escape:'javascript'}{$cincoZeroZero|escape:'javascript'}{$additionalAuthorsExport|escape:'javascript'}{$oitoCincoMeiaA|escape:'javascript'}{$noveQuatroCinco|escape:'javascript'}";
-            var fileName = 'omp.mrc'; // Nome do arquivo a ser baixado
-
+            var fileName = 'ojs.mrc'; // Nome do arquivo a ser baixado
             var blob = new Blob([text], { type: 'text/plain' });
             if (window.navigator.msSaveOrOpenBlob) {
                 window.navigator.msSaveBlob(blob, fileName);
@@ -338,8 +279,13 @@
         });
     });
 </script>
+
+
+
+
+
 <hr>TESTES:<br>
-<hr>FINAL<br>
+<hr>TEXTO:<br>
 <b>LDR= </b><br>
 <b>005= </b>{$zeroZeroCinco}<br>
 <b>008= </b>{$zeroZeroOito}<br>
@@ -351,7 +297,7 @@
 <b>242= Título em inglês</b><br>
 <b>245= </b>{$doisQuatroCinco}<br>
 <b>260= </b>{$doisMeiaZero}<br>
-
+<b>300= Páginas</b><br>
 <b>500= </b>{$cincoZeroZero}<br>
 <b>520= Resumo pt_BR</b>    <br>
 {assign var="additionalAuthorsExport" value=""}
@@ -371,11 +317,32 @@
 		<b>700= </b>{$seteZeroZero}<br>
     {/if}
 {/foreach}
+<b>773= Revista-local-ISSUE-data-issnOnline </b><br>
 <b>856a= </b>{$oitoCincoMeiaA}<br>
 <b>940= Resumo em outro idioma</b><br>
 <b>945= ARTIGO de periodico</b>{$noveQuatroCinco}<br>
 
 
+
+<hr>NUMERAL:<br>
+<b>005= </b>{$rec005}<br>
+<b>008= </b>{$rec008}<br>
+<b>024= </b>{$rec024}<br>
+<b>040= </b>{$rec040}<br>
+<b>041= </b>{$rec041}<br>
+<b>044= </b>{$rec044}<br>
+<b>100= </b>{$rec100}<br>
+<b>242= </b>{$rec242}<br>
+<b>245= </b>{$rec245}<br>
+<b>260= </b>{$rec260}<br>
+<b>300= </b>{$rec300}<br>
+<b>500= </b>{$rec500}<br>
+<b>520= </b>{$rec520}<br>
+<b>700= </b>{$rec7uuAll}<br>
+<b>773= </b>{$rec773}<br>
+<b>856= </b>{$rec856A}<br>
+<b>940= </b>{$rec940}<br>
+<b>945= </b>{$rec945}<br>
 
 
 
