@@ -286,7 +286,14 @@
 
 <hr>TESTES:<br>
 
-    
+
+{foreach from=$currentContext->getSupportedLocales() item=locale}
+    {assign var="localizedTitle" value=$publication->getLocalizedTitle($locale)}
+    {if $localizedTitle && $locale != $primaryLocale}
+        {$localizedTitle}<br>
+    {/if}
+{/foreach}
+
 
 
 
@@ -415,7 +422,12 @@ a{$publication->getLocalizedTitle(null, 'html')|strip_unsafe_html}b<br>
 
 
 
-
+<b>Títulos em diferentes idiomas, ignorando o idioma primário:</b><br>
+{foreach from=$currentContext->getSupportedLocales() item=locale}
+    {if $locale != $primaryLocale}
+        {$publication->getLocalizedTitle($locale)}<br>
+    {/if}
+{/foreach}<br>
 
 
 
@@ -431,6 +443,7 @@ a{$publication->getLocalizedTitle(null, 'html')|strip_unsafe_html}b<br>
 <b>Seção: </b>{$section->getLocalizedTitle()|escape}<br>
 <b>Categoria: </b>{foreach from=$categories item=category}{$category->getLocalizedTitle()|escape};{/foreach}<br>
 <b>Idioma: </b><br>
+<b>Idiomas da revista: </b>{$currentContext->getSupportedLocales()|@print_r}<br>
 <b>Link do 1° PDF: </b>{$linkDownload}<br>
 <b>Resumo: </b> {$publication->getLocalizedData('abstract', 'de')}<br>
 <b>Resumo: </b> {$publication->getLocalizedData('abstract', $localeKey)}<br>
