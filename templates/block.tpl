@@ -285,6 +285,15 @@
 
 
 <hr>TESTES:<br>
+
+    
+
+
+
+
+
+
+
 <hr>TEXTO:<br>
 <b>LDR= </b><br>
 <b>005= </b>{$zeroZeroCinco}<br>
@@ -294,12 +303,13 @@
 <b>041= </b>{$zeroQuatroUm}<br>
 <b>044= </b>{$zeroQuatroQuatro}<br>
 <b>100= </b>{$umZeroZero}<br>
-<b>242= Título em inglês</b><br>
+<b>242= Título em inglês: </b>{$publication->getLocalizedTitle('en')}<br>
 <b>245= </b>{$doisQuatroCinco}<br>
 <b>260= </b>{$doisMeiaZero}<br>
-<b>300= Páginas</b><br>
+{assign var=submissionPages value=$publication->getData('pages')}
+<b>300= Páginas: </b>{$submissionPages|escape}<br>
 <b>500= </b>{$cincoZeroZero}<br>
-<b>520= Resumo pt_BR</b>    <br>
+<b>520= Resumo pt_BR </b>{$publication->getLocalizedData('abstract', 'pt_BR')}   <br>
 {assign var="additionalAuthorsExport" value=""}
 {foreach from=$publication->getData('authors') item=author name=authorLoop}
     {if $smarty.foreach.authorLoop.index > 0}
@@ -317,9 +327,29 @@
 		<b>700= </b>{$seteZeroZero}<br>
     {/if}
 {/foreach}
-<b>773= Revista-local-ISSUE-data-issnOnline </b><br>
+{**Formatacao data para campo 773 *}
+    {assign var="datePublished" value=$publication->getData('datePublished')}
+    {assign var="timestamp" value=strtotime($datePublished)}
+    {assign var="month" value=date('M', $timestamp)}
+    {assign var="translatedMonth" value=""}
+    {if $month == 'Jan'}{assign var="translatedMonth" value="Jan"}
+    {elseif $month == 'Feb'}{assign var="translatedMonth" value="Fev."}
+    {elseif $month == 'Mar'}{assign var="translatedMonth" value="Mar."}
+    {elseif $month == 'Apr'}{assign var="translatedMonth" value="Abr."}
+    {elseif $month == 'May'}{assign var="translatedMonth" value="Mai."}
+    {elseif $month == 'Jun'}{assign var="translatedMonth" value="Jun."}
+    {elseif $month == 'Jul'}{assign var="translatedMonth" value="Jul."}
+    {elseif $month == 'Aug'}{assign var="translatedMonth" value="Ago."}
+    {elseif $month == 'Sep'}{assign var="translatedMonth" value="Set."}
+    {elseif $month == 'Oct'}{assign var="translatedMonth" value="Out."}
+    {elseif $month == 'Nov'}{assign var="translatedMonth" value="Nov."}
+    {elseif $month == 'Dec'}{assign var="translatedMonth" value="Dez."}
+    {/if}
+    {assign var="formattedDate" value=$translatedMonth|cat:' '|cat:date('Y', $timestamp)}
+    
+<b>773= </b>{$currentContext->getLocalizedName()} dCidade {$issue->getIssueIdentification()}, {$submissionPages|escape}, {$formattedDate} {$currentContext->getData('onlineIssn')}<br>
 <b>856a= </b>{$oitoCincoMeiaA}<br>
-<b>940= Resumo em outro idioma</b><br>
+<b>940= Resumo em outro idioma</b>{$publication->getLocalizedData('abstract', 'en')}<br>
 <b>945= ARTIGO de periodico</b>{$noveQuatroCinco}<br>
 
 
