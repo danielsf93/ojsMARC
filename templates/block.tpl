@@ -286,14 +286,26 @@
 
 <hr>TESTES:<br>
 
-
+Título em outros idiomas:<br>
+{assign var="localizedTitles" value=[]}
 {foreach from=$currentContext->getSupportedLocales() item=locale}
     {assign var="localizedTitle" value=$publication->getLocalizedTitle($locale)}
-    {if $localizedTitle && $locale != $primaryLocale}
+    {if $localizedTitle && $locale != $primaryLocale && !in_array($localizedTitle, $localizedTitles)}
+        {$localizedTitles[] = $localizedTitle}
         {$localizedTitle}<br>
     {/if}
 {/foreach}
+<hr>
+Resumo em outros idiomas:<br>
 
+{assign var="localizedAbstracts" value=[]}
+{foreach from=$currentContext->getSupportedLocales() item=locale}
+    {assign var="localizedData" value=$publication->getLocalizedData('abstract', $locale)}
+    {if $localizedData && $locale != $primaryLocale && !in_array($localizedData, $localizedAbstracts)}
+        {$localizedAbstracts[] = $localizedData}
+        {$localizedData}<br>
+    {/if}
+{/foreach}
 
 
 
