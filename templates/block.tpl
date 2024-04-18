@@ -2,11 +2,8 @@
 
 {if isset($publication)}
 
-	<div class="marc">  
-      
-
-        
-
+	<div class="marc">         
+<hr>
 {* Organizando a Informação *}
 
 {assign var="dataFormatada" value=$smarty.now|date_format:"%Y%m%d%H%M%S.0"}
@@ -14,8 +11,6 @@
 {assign var="zeroZeroCinco" value="$dataFormatada"}
 
 {assign var="zeroZeroOito" value="      s2023    bl            000 0 por d7"}
-
-    
         
 {assign var="zeroDoisQuatro" value="a{$publication->getStoredPubId('doi')|escape}2DOI"}
 
@@ -25,8 +20,7 @@
 
 {assign var="zeroQuatroQuatro" value="abl1 "}
 
-
-     {* Obter Primeiro Autor *}
+{* Obter Primeiro Autor *}
 {foreach from=$publication->getData('authors') item=author name=authorLoop}
     {if $smarty.foreach.authorLoop.index == 0}
         {assign var="surname" value=$author->getLocalizedFamilyName()|escape}
@@ -34,7 +28,6 @@
         {assign var="orcid" value=$author->getOrcid()|default:''}
         {assign var="affiliation" value=$author->getLocalizedAffiliation()|default:''}
         {assign var="locale" value=$author->getCountryLocalized()|escape}
-
         {if $affiliation|strstr:'Universidade de São Paulo'}
             {if $orcid}
                 {assign var="umZeroZero" value="a{$surname}, {$givenName}0{$orcid}4org5(*)"}
@@ -54,21 +47,10 @@
         {/if}
     {/if}
 {/foreach}
-{** Título em outros idiomas 242*}
-{assign var="doisQuatroDois" value="ronaldo"}
-
-
-
-
-
-
-
 
 {assign var="doisQuatroCinco" value="10a{$publication->getLocalizedFullTitle()|escape}h[recurso eletrônico]  "}
 
-
 {assign var="doisMeiaZero" value="a LOCALb{$holder}c{$publication->getData('copyrightYear')}0 "}
-
 
 {assign var="cincoZeroZero" value="aDisponível em: https://{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}. Acesso em: {$smarty.now|date_format:"%d.%m.%Y"}"}
 
@@ -85,29 +67,21 @@
         {assign var="surname" value=$author->getLocalizedFamilyName()|escape}
         {assign var="givenName" value=$author->getLocalizedGivenName()|escape}
         {assign var="orcid" value=$author->getOrcid()|default:''}
-
         {if $orcid}
             {assign var="seteZeroZero" value="1 a{$surname}, {$givenName}0{$orcid}4org"}
         {else}
             {assign var="seteZeroZero" value="1 a{$surname}, {$givenName}0 4org"}
         {/if}
-
-        {assign var="additionalAuthorsExport" value="$additionalAuthorsExport{$seteZeroZero}"}
-		
+        {assign var="additionalAuthorsExport" value="$additionalAuthorsExport{$seteZeroZero}"}	
     {/if}
 {/foreach}
-
    
 {assign var="oitoCincoMeiaA" value="4 zClicar sobre o botão para acesso ao texto completouhttps://doi.org/{$publication->getStoredPubId('doi')|escape}3DOI"}
 
+{assign var="ldr" value="01086nab   200277Ia 45"} 
 
 
-
-
-
-
-{assign var="ldr" value="01131nam 22000241a 4500 "} 
-
+{** CALCULO DO NUMERAL*}
 {* Calculando o comprimento da variável $rec005 *}
 {assign var="rec005POS" value=0}
 {assign var="rec005CAR" value=sprintf('%04d', strlen($zeroZeroCinco) + 0)}
@@ -117,7 +91,6 @@
 {assign var="rec008POS" value=$rec005CAR + $rec005POS}
 {assign var="rec008CAR" value=sprintf('%04d', strlen($zeroZeroOito) + 0)}
 {assign var="rec008" value="008"|cat:$rec008CAR|cat:sprintf('%05d', $rec008POS)}
-
 
 {* Calculando o comprimento da variável $rec024 *}
 {assign var="rec024POS" value=$rec005CAR + $rec005POS}
@@ -152,7 +125,6 @@
 {assign var="rec260POS" value=$rec245CAR + $rec245POS}
 {assign var="rec260CAR" value=sprintf('%04d', strlen($doisMeiaZero) + 0)}
 {assign var="rec260" value="260"|cat:$rec260CAR|cat:sprintf('%05d', $rec260POS)}
-
 
 
 {assign var="rec500POS" value=$rec490CAR + $rec490POS}
@@ -246,21 +218,12 @@
 
 
 
- 
+ {** BOTÃO*}
     <button id="downloadButton" class="botao">Baixar Registro MARC</button>
 <style>
-    #downloadButton {
-    font-weight: bold;
-    padding: 10px 20px; /* Espaçamento interno */
-    background-color: #076fb1; /* Cor de fundo */
-    color: #ffffff; /* Cor do texto */
-    border: none; /* Remover borda */
-    border-radius: 5px; /* Bordas arredondadas */
-    cursor: pointer; /* Cursor ao passar por cima */
-    transition: background-color 0.3s ease; /* Transição suave da cor de fundo */
-}
+    #downloadButton { font-weight: bold; padding: 10px 20px; background-color: #076fb1; color: #ffffff; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease; }
 #downloadButton:hover {
-    background-color: #055a85; /* Mudar a cor de fundo ao passar o mouse */
+    background-color: #055a85; 
 }   
 </style>
 {$authors=$publication->getData('authors')}
@@ -287,26 +250,10 @@
         });
     });
 </script>
-
-
-
-
-
 <hr>TESTES:<br>
 
-
-
-
-<hr>
-
-
-
-
-
-
-
 <hr>TEXTO:<br>
-<b>LDR= </b>01086nab   200277Ia 45<br>
+<b>LDR= </b>{$ldr}<br>
 <b>005= </b>{$zeroZeroCinco}<br>
 <b>008= </b>{$zeroZeroOito}<br>
 <b>024= </b>{$zeroDoisQuatro}<br>
@@ -338,13 +285,11 @@
         {assign var="surname" value=$author->getLocalizedFamilyName()|escape}
         {assign var="givenName" value=$author->getLocalizedGivenName()|escape}
         {assign var="orcid" value=$author->getOrcid()|default:''}
-
         {if $orcid}
             {assign var="seteZeroZero" value="1 a{$surname}, {$givenName}0{$orcid}4org"}
         {else}
             {assign var="seteZeroZero" value="1 a{$surname}, {$givenName}0 4org"}
         {/if}
-
         {assign var="additionalAuthorsExport" value="$additionalAuthorsExport{$seteZeroZero}"}
 		<b>700= </b>{$seteZeroZero}<br>
     {/if}
@@ -368,11 +313,9 @@
     {elseif $month == 'Dec'}{assign var="translatedMonth" value="Dez."}
     {/if}
     {assign var="formattedDate" value=$translatedMonth|cat:' '|cat:date('Y', $timestamp)}
-    
 <b>773= </b>{$currentContext->getLocalizedName()} dCidade {$issue->getIssueIdentification()}, {$submissionPages|escape}, {$formattedDate} {$currentContext->getData('onlineIssn')}<br>
+
 <b>856a= </b>{$oitoCincoMeiaA}<br>
-
-
 
 {assign var="localizedAbstracts" value=[]}
 {foreach from=$currentContext->getSupportedLocales() item=locale}
@@ -424,108 +367,6 @@
 <b>945= </b>{$rec945}<br>
 
 
-
-
-
-
 <hr>
-
-{assign var="idiomas" value=[
-    'ar' => 'Árabe', 'bg' => 'Búlgaro', 'ca' => 'Catalão', 'ckb' => 'Curdo',
-    'cs' => 'Tcheco', 'da' => 'Dinamarquês', 'de' => 'Alemão', 'el' => 'Grego',
-    'en' => 'Inglês', 'es' => 'Espanhol', 'fa' => 'Persa', 'fi' => 'Finlandês',
-    'fr_CA' => 'Francês', 'fr_FR' => 'Francês', 'gd' => 'Gaélico', 'gl' => 'Galês',
-    'hr' => 'Croata', 'hu' => 'Húngaro', 'id' => 'Indonésio', 'it' => 'Italiano',
-    'ja' => 'Japonês', 'mk' => 'Macedônio', 'nb' => 'Norueguês', 'pl' => 'Polonês',
-    'pt_BR' => 'Português', 'pt_PT' => 'Português', 'ro' => 'Romeno', 'ru' => 'Russo',
-    'sl' => 'Esloveno', 'sv' => 'Sueco', 'tr' => 'Turco', 'uk' => 'Ucraniano', 'vi' => 'Vietnamita'
-]}
-
-{assign var="locale" value=$publication->getData('locale')}
-{if isset($idiomas[$locale])}
-    <b>Idioma de submissão:</b> {$idiomas[$locale]}<br>
-{else}
-    <b>Idioma de submissão:</b> {$locale}<br>
-{/if}
-<b>Título no idioma de submissão:</b> {$publication->getLocalizedTitle('primaryLocale')}<br>
-
-<p>Nome da revista: {$currentContext->getLocalizedName()}</p>
-ISSN Online: {$currentContext->getData('onlineIssn')}<br>
-ISSN Impresso: {$currentContext->getData('printIssn')}<br>
-Idioma da revista: {$primaryLocale}<br>
-Idioma atual: {$currentLocale}<br>
-a{$publication->getLocalizedTitle(null, 'html')|strip_unsafe_html}b<br>
-
-
-<b>{$publication->getLocalizedTitle('pt_BR')}<br>
-{$publication->getLocalizedTitle('en')}<br>
-{$publication->getLocalizedTitle('')}<br>
-{$publication->getLocalizedTitle('es')}<br></b>
-
-
-
-<b>Títulos em diferentes idiomas, ignorando o idioma primário:</b><br>
-{foreach from=$currentContext->getSupportedLocales() item=locale}
-    {if $locale != $primaryLocale}
-        {$publication->getLocalizedTitle($locale)}<br>
-    {/if}
-{/foreach}<br>
-
-
-
-
-
-				
-			
-<br>
-{assign var=submissionPages value=$publication->getData('pages')}
-<b>Páginas: </b>{$submissionPages|escape}<br>
-<b>Edição: </b>{$issue->getIssueIdentification()}<br>
-<b>Link da edição: </b>{url page="issue" op="view" path=$issue->getBestIssueId()}<br>
-<b>Seção: </b>{$section->getLocalizedTitle()|escape}<br>
-<b>Categoria: </b>{foreach from=$categories item=category}{$category->getLocalizedTitle()|escape};{/foreach}<br>
-<b>Idioma: </b><br>
-<b>Idiomas da revista: </b>{$currentContext->getSupportedLocales()|@print_r}<br>
-<b>Link do 1° PDF: </b>{$linkDownload}<br>
-<hr>
-Título em outros idiomas:<br>
-{assign var="localizedTitles" value=[]}
-{foreach from=$currentContext->getSupportedLocales() item=locale}
-    {assign var="localizedTitle" value=$publication->getLocalizedTitle($locale)}
-    {if $localizedTitle && $locale != $primaryLocale}
-        {assign var="primaryTitle" value=$publication->getLocalizedTitle($primaryLocale)}
-        {if !$primaryTitle || $localizedTitle != $primaryTitle}
-            {$localizedTitles[] = $localizedTitle}
-            {$localizedTitle}<br>
-        {/if}
-    {/if}
-{/foreach}
-
-<hr>
-Resumo em outros idiomas:<br>
-
-{assign var="localizedAbstracts" value=[]}
-{foreach from=$currentContext->getSupportedLocales() item=locale}
-    {assign var="localizedData" value=$publication->getLocalizedData('abstract', $locale)}
-    {if $localizedData && $locale != $primaryLocale}
-        {assign var="primaryAbstract" value=$publication->getLocalizedData('abstract', $primaryLocale)}
-        {if !$primaryAbstract || $localizedData != $primaryAbstract}
-            {$localizedData}<br>
-            {assign var="localizedAbstracts" value=$localizedData}
-        {/if}
-    {/if}
-{/foreach}
-<hr>
-<b>Resumo: </b> {$publication->getLocalizedData('abstract', 'de')}<br>
-<b>Resumo: </b> {$publication->getLocalizedData('abstract', $localeKey)}<br>
-<b>Abstract: </b><br>
-
-
-
-<hr>
-
-
-
 </div>
-
 {/if}
