@@ -13,7 +13,7 @@
 
 {assign var="zeroZeroCinco" value="$dataFormatada"}
 
-{assign var="zeroZeroOito" value="      s2023    bl            000 0 por d"}
+{assign var="zeroZeroOito" value="      s2023    bl            000 0 por d7"}
 
     
         
@@ -54,6 +54,14 @@
         {/if}
     {/if}
 {/foreach}
+{** Título em outros idiomas 242*}
+{assign var="doisQuatroDois" value="ronaldo"}
+
+
+
+
+
+
 
 
 {assign var="doisQuatroCinco" value="10a{$publication->getLocalizedFullTitle()|escape}h[recurso eletrônico]  "}
@@ -286,35 +294,9 @@
 
 <hr>TESTES:<br>
 
-Título em outros idiomas:<br>
-{assign var="localizedTitles" value=[]}
-{foreach from=$currentContext->getSupportedLocales() item=locale}
-    {assign var="localizedTitle" value=$publication->getLocalizedTitle($locale)}
-    {if $localizedTitle && $locale != $primaryLocale}
-        {assign var="primaryTitle" value=$publication->getLocalizedTitle($primaryLocale)}
-        {if !$primaryTitle || $localizedTitle != $primaryTitle}
-            {$localizedTitles[] = $localizedTitle}
-            {$localizedTitle}<br>
-        {/if}
-    {/if}
-{/foreach}
+
 
 <hr>
-Resumo em outros idiomas:<br>
-
-{assign var="localizedAbstracts" value=[]}
-{foreach from=$currentContext->getSupportedLocales() item=locale}
-    {assign var="localizedData" value=$publication->getLocalizedData('abstract', $locale)}
-    {if $localizedData && $locale != $primaryLocale}
-        {assign var="primaryAbstract" value=$publication->getLocalizedData('abstract', $primaryLocale)}
-        {if !$primaryAbstract || $localizedData != $primaryAbstract}
-            {$localizedData}<br>
-            {assign var="localizedAbstracts" value=$localizedData}
-        {/if}
-    {/if}
-{/foreach}
-
-
 
 
 
@@ -323,7 +305,7 @@ Resumo em outros idiomas:<br>
 
 
 <hr>TEXTO:<br>
-<b>LDR= </b><br>
+<b>LDR= </b>01086nab   200277Ia 45<br>
 <b>005= </b>{$zeroZeroCinco}<br>
 <b>008= </b>{$zeroZeroOito}<br>
 <b>024= </b>{$zeroDoisQuatro}<br>
@@ -331,7 +313,18 @@ Resumo em outros idiomas:<br>
 <b>041= </b>{$zeroQuatroUm}<br>
 <b>044= </b>{$zeroQuatroQuatro}<br>
 <b>100= </b>{$umZeroZero}<br>
-<b>242= Título em inglês: </b>{$publication->getLocalizedTitle('en')}<br>
+{assign var="localizedTitles" value=[]}
+{foreach from=$currentContext->getSupportedLocales() item=locale}
+    {assign var="localizedTitle" value=$publication->getLocalizedTitle($locale)}
+    {if $localizedTitle && $locale != $primaryLocale}
+        {assign var="primaryTitle" value=$publication->getLocalizedTitle($primaryLocale)}
+        {if !$primaryTitle || $localizedTitle != $primaryTitle}
+            {$localizedTitles[] = $localizedTitle}
+         <b>242= </b>   00a{$localizedTitle}<br>
+        {/if}
+    {/if}
+{/foreach}
+
 <b>245= </b>{$doisQuatroCinco}<br>
 <b>260= </b>{$doisMeiaZero}<br>
 {assign var=submissionPages value=$publication->getData('pages')}
@@ -466,6 +459,35 @@ a{$publication->getLocalizedTitle(null, 'html')|strip_unsafe_html}b<br>
 <b>Idioma: </b><br>
 <b>Idiomas da revista: </b>{$currentContext->getSupportedLocales()|@print_r}<br>
 <b>Link do 1° PDF: </b>{$linkDownload}<br>
+<hr>
+Título em outros idiomas:<br>
+{assign var="localizedTitles" value=[]}
+{foreach from=$currentContext->getSupportedLocales() item=locale}
+    {assign var="localizedTitle" value=$publication->getLocalizedTitle($locale)}
+    {if $localizedTitle && $locale != $primaryLocale}
+        {assign var="primaryTitle" value=$publication->getLocalizedTitle($primaryLocale)}
+        {if !$primaryTitle || $localizedTitle != $primaryTitle}
+            {$localizedTitles[] = $localizedTitle}
+            {$localizedTitle}<br>
+        {/if}
+    {/if}
+{/foreach}
+
+<hr>
+Resumo em outros idiomas:<br>
+
+{assign var="localizedAbstracts" value=[]}
+{foreach from=$currentContext->getSupportedLocales() item=locale}
+    {assign var="localizedData" value=$publication->getLocalizedData('abstract', $locale)}
+    {if $localizedData && $locale != $primaryLocale}
+        {assign var="primaryAbstract" value=$publication->getLocalizedData('abstract', $primaryLocale)}
+        {if !$primaryAbstract || $localizedData != $primaryAbstract}
+            {$localizedData}<br>
+            {assign var="localizedAbstracts" value=$localizedData}
+        {/if}
+    {/if}
+{/foreach}
+<hr>
 <b>Resumo: </b> {$publication->getLocalizedData('abstract', 'de')}<br>
 <b>Resumo: </b> {$publication->getLocalizedData('abstract', $localeKey)}<br>
 <b>Abstract: </b><br>
