@@ -328,9 +328,9 @@
 <b>245= </b>{$doisQuatroCinco}<br>
 <b>260= </b>{$doisMeiaZero}<br>
 {assign var=submissionPages value=$publication->getData('pages')}
-<b>300= Páginas: </b>{$submissionPages|escape}<br>
+<b>300= </b>{$submissionPages|escape}<br>
 <b>500= </b>{$cincoZeroZero}<br>
-<b>520= Resumo pt_BR </b>{$publication->getLocalizedData('abstract', 'pt_BR')}   <br>
+<b>520= </b>{$publication->getLocalizedData('abstract', 'pt_BR')}   <br>
 {assign var="additionalAuthorsExport" value=""}
 {foreach from=$publication->getData('authors') item=author name=authorLoop}
     {if $smarty.foreach.authorLoop.index > 0}
@@ -370,7 +370,24 @@
     
 <b>773= </b>{$currentContext->getLocalizedName()} dCidade {$issue->getIssueIdentification()}, {$submissionPages|escape}, {$formattedDate} {$currentContext->getData('onlineIssn')}<br>
 <b>856a= </b>{$oitoCincoMeiaA}<br>
-<b>940= Resumo em outro idioma</b>{$publication->getLocalizedData('abstract', 'en')}<br>
+
+
+
+{assign var="localizedAbstracts" value=[]}
+{foreach from=$currentContext->getSupportedLocales() item=locale}
+    {assign var="localizedData" value=$publication->getLocalizedData('abstract', $locale)}
+    {if $localizedData && $locale != $primaryLocale}
+        {assign var="primaryAbstract" value=$publication->getLocalizedData('abstract', $primaryLocale)}
+        {if !$primaryAbstract || $localizedData != $primaryAbstract}
+            <b>940= </b>a{$localizedData}  <br>
+            {assign var="localizedAbstracts" value=$localizedData}
+        {/if}
+    {/if}
+{/foreach}
+
+
+
+
 <b>945= ARTIGO de periodico</b>{$noveQuatroCinco}<br>
 
 
