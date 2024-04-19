@@ -117,8 +117,13 @@
 {assign var="rec100CAR" value=sprintf('%04d', strlen($umZeroZero) + 3)}
 {assign var="rec100" value="100"|cat:$rec100CAR|cat:sprintf('%05d', $rec100POS)}
 
+{* Calculando o comprimento da variável $rec242 *}
+{assign var="rec242POS" value=$rec100CAR + $rec100POS}
+{assign var="rec242CAR" value=sprintf('%04d', strlen($doisQuatroDois) - 3)}
+{assign var="rec242" value="242"|cat:$rec242CAR|cat:sprintf('%05d', $rec242POS)}
+
 {* Calculando o comprimento da variável $rec245 *}
-{assign var="rec245POS" value=$rec100CAR + $rec100POS}
+{assign var="rec245POS" value=$rec242CAR + $rec242POS}
 {assign var="rec245CAR" value=sprintf('%04d', strlen($doisQuatroCinco) - 3)}
 {assign var="rec245" value="245"|cat:$rec245CAR|cat:sprintf('%05d', $rec245POS)}
 
@@ -251,6 +256,25 @@
     });
 </script>
 <hr>TESTES:<br>
+
+
+
+{assign var="rec242" value=''}
+{foreach from=$currentContext->getSupportedLocales() item=locale}
+    {assign var="localizedTitle" value=$publication->getLocalizedTitle($locale)}
+    {if $localizedTitle && $locale != $primaryLocale}
+        {assign var="primaryTitle" value=$publication->getLocalizedTitle($primaryLocale)}
+        {if !$primaryTitle || $localizedTitle != $primaryTitle}
+            {$localizedTitles[] = $localizedTitle}
+            {assign var="titleLength" value=sprintf('%04d', strlen($localizedTitle))}
+            {assign var="rec242" value="$rec242 242$titleLength"}
+        {/if}
+    {/if}
+{/foreach}
+
+{$rec242}
+
+
 
 <hr>TEXTO:<br>
 <b>LDR= </b>{$ldr}<br>
