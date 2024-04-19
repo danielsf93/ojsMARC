@@ -117,12 +117,36 @@
 {assign var="rec100CAR" value=sprintf('%04d', strlen($umZeroZero) + 3)}
 {assign var="rec100" value="100"|cat:$rec100CAR|cat:sprintf('%05d', $rec100POS)}
 
-
+{* Calculando o comprimento da variável $rec242 *}
+{assign var="rec242" value=''}
+{assign var="rec242POS" value=$rec100CAR + $rec100POS}
+{foreach from=$currentContext->getSupportedLocales() item=locale}
+    {assign var="localizedTitle" value=$publication->getLocalizedTitle($locale)}
+    {if $localizedTitle && $locale != $primaryLocale}
+        {assign var="primaryTitle" value=$publication->getLocalizedTitle($primaryLocale)}
+        {if !$primaryTitle || $localizedTitle != $primaryTitle}
+            {$localizedTitles[] = $localizedTitle}
+            {assign var="titleLength" value=sprintf('%04d', strlen($localizedTitle))}
+            {if $smarty.foreach.current.first}
+                {assign var="rec242" value="$rec242 242$titleLength"}
+            {else}
+                {assign var="rec242POSFormatted" value=sprintf('%05d', $rec242POS)}
+                {assign var="rec242" value="$rec242 242$titleLength$rec242POSFormatted"}
+            {/if}
+            {assign var="rec242POS" value=$rec242POS + $titleLength}
+        {/if}
+    {/if}
+{/foreach}
 
 {* Calculando o comprimento da variável $rec245 *}
-{assign var="rec245POS" value=$rec242CAR + $rec242POS}
+{if $rec242POS}
+    {assign var="rec245POS" value=$rec242CAR + $rec242POS}
+{else}
+    {assign var="rec245POS" value=$rec100CAR + $rec100POS}
+{/if}
 {assign var="rec245CAR" value=sprintf('%04d', strlen($doisQuatroCinco) - 3)}
 {assign var="rec245" value="245"|cat:$rec245CAR|cat:sprintf('%05d', $rec245POS)}
+
 
 {assign var="rec260POS" value=$rec245CAR + $rec245POS}
 {assign var="rec260CAR" value=sprintf('%04d', strlen($doisMeiaZero) + 0)}
@@ -236,7 +260,7 @@
     document.addEventListener('DOMContentLoaded', function() {
         var downloadButton = document.getElementById('downloadButton');
         downloadButton.addEventListener('click', function() {
-            var text = "{$totalcaracteres}nam {$totalautores}a 4500 {$rec005|escape:'javascript'}{$rec008|escape:'javascript'}{$rec024|escape:'javascript'}{$rec040|escape:'javascript'}{$rec041|escape:'javascript'}{$rec044|escape:'javascript'}{$rec100|escape:'javascript'}{$rec245|escape:'javascript'}{$rec260|escape:'javascript'}{$rec500|escape:'javascript'}{$rec7uuAll|escape:'javascript'}{$recSetAll|escape:'javascript'}{$rec856A|escape:'javascript'}{$rec945|escape:'javascript'}{$zeroZeroCinco|escape:'javascript'}{$zeroZeroOito|escape:'javascript'}{$zeroDoisQuatro|escape:'javascript'}{$zeroQuatroZero|escape:'javascript'}{$zeroQuatroUm|escape:'javascript'}{$zeroQuatroQuatro|escape:'javascript'}{$umZeroZero|escape:'javascript'}{$doisQuatroCinco|escape:'javascript'}{$doisMeiaZero|escape:'javascript'}{$cincoZeroZero|escape:'javascript'}{$additionalAuthorsExport|escape:'javascript'}{$oitoCincoMeiaA|escape:'javascript'}{$noveQuatroCinco|escape:'javascript'}";
+            var text = "{$totalcaracteres}nam {$totalautores}a 4500 {$rec005|escape:'javascript'}{$rec008|escape:'javascript'}{$rec024|escape:'javascript'}{$rec040|escape:'javascript'}{$rec041|escape:'javascript'}{$rec044|escape:'javascript'}{$rec100|escape:'javascript'}{$rec242|escape:'javascript'}{$rec245|escape:'javascript'}{$rec260|escape:'javascript'}{$rec500|escape:'javascript'}{$rec7uuAll|escape:'javascript'}{$recSetAll|escape:'javascript'}{$rec856A|escape:'javascript'}{$rec945|escape:'javascript'}{$zeroZeroCinco|escape:'javascript'}{$zeroZeroOito|escape:'javascript'}{$zeroDoisQuatro|escape:'javascript'}{$zeroQuatroZero|escape:'javascript'}{$zeroQuatroUm|escape:'javascript'}{$zeroQuatroQuatro|escape:'javascript'}{$umZeroZero|escape:'javascript'}{$doisQuatroCinco|escape:'javascript'}{$doisMeiaZero|escape:'javascript'}{$cincoZeroZero|escape:'javascript'}{$additionalAuthorsExport|escape:'javascript'}{$oitoCincoMeiaA|escape:'javascript'}{$noveQuatroCinco|escape:'javascript'}";
             var fileName = 'ojs.mrc'; // Nome do arquivo a ser baixado
             var blob = new Blob([text], { type: 'text/plain' });
             if (window.navigator.msSaveOrOpenBlob) {
@@ -256,27 +280,10 @@
 
 
 
-{assign var="rec242" value=''}
-{assign var="rec242POS" value=$rec100CAR + $rec100POS}
-{foreach from=$currentContext->getSupportedLocales() item=locale}
-    {assign var="localizedTitle" value=$publication->getLocalizedTitle($locale)}
-    {if $localizedTitle && $locale != $primaryLocale}
-        {assign var="primaryTitle" value=$publication->getLocalizedTitle($primaryLocale)}
-        {if !$primaryTitle || $localizedTitle != $primaryTitle}
-            {$localizedTitles[] = $localizedTitle}
-            {assign var="titleLength" value=sprintf('%04d', strlen($localizedTitle))}
-            {if $smarty.foreach.current.first}
-                {assign var="rec242" value="$rec242 242$titleLength"}
-            {else}
-                {assign var="rec242POSFormatted" value=sprintf('%05d', $rec242POS)}
-                {assign var="rec242" value="$rec242 242$titleLength($rec242POSFormatted)"}
-            {/if}
-            {assign var="rec242POS" value=$rec242POS + $titleLength}
-        {/if}
-    {/if}
-{/foreach}
 
-{$rec242}
+
+
+
 
 
 
@@ -301,6 +308,8 @@
         {/if}
     {/if}
 {/foreach}
+
+
 
 <b>245= </b>{$doisQuatroCinco}<br>
 <b>260= </b>{$doisMeiaZero}<br>
@@ -383,7 +392,7 @@
 <b>041= </b>{$rec041}<br>
 <b>044= </b>{$rec044}<br>
 <b>100= </b>{$rec100}<br>
-<b>242= </b>{$rec242}<br>
+<b>242= </b>{$rec242|replace:' ':''}<br>
 <b>245= </b>{$rec245}<br>
 <b>260= </b>{$rec260}<br>
 <b>300= </b>{$rec300}<br>
