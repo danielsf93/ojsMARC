@@ -153,6 +153,14 @@
 {assign var="rec260" value="260"|cat:$rec260CAR|cat:sprintf('%05d', $rec260POS)}
 
 
+
+
+{assign var="rec300POS" value=$rec260CAR + $rec260POS}
+{assign var=submissionPages value=$publication->getData('pages')}
+{assign var="rec300CAR" value=sprintf('%04d', strlen($submissionPages|escape) + 0)}
+{assign var="rec300" value="300"|cat:$rec300CAR|cat:sprintf('%05d', $rec300POS)}
+
+
 {assign var="rec500POS" value=$rec490CAR + $rec490POS}
 {assign var="rec500CAR" value=sprintf('%04d', strlen($cincoZeroZero) + 3)}
 {assign var="rec500" value="500"|cat:$rec500CAR|cat:sprintf('%05d', $rec500POS - 3)}
