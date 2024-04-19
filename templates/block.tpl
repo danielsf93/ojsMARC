@@ -147,24 +147,22 @@
 {assign var="rec245CAR" value=sprintf('%04d', strlen($doisQuatroCinco) - 3)}
 {assign var="rec245" value="245"|cat:$rec245CAR|cat:sprintf('%05d', $rec245POS)}
 
-
 {assign var="rec260POS" value=$rec245CAR + $rec245POS}
 {assign var="rec260CAR" value=sprintf('%04d', strlen($doisMeiaZero) + 0)}
 {assign var="rec260" value="260"|cat:$rec260CAR|cat:sprintf('%05d', $rec260POS)}
-
-
-
 
 {assign var="rec300POS" value=$rec260CAR + $rec260POS}
 {assign var=submissionPages value=$publication->getData('pages')}
 {assign var="rec300CAR" value=sprintf('%04d', strlen($submissionPages|escape) + 0)}
 {assign var="rec300" value="300"|cat:$rec300CAR|cat:sprintf('%05d', $rec300POS)}
 
-
-{assign var="rec500POS" value=$rec490CAR + $rec490POS}
+{assign var="rec500POS" value=$rec300CAR + $rec300POS}
 {assign var="rec500CAR" value=sprintf('%04d', strlen($cincoZeroZero) + 3)}
-{assign var="rec500" value="500"|cat:$rec500CAR|cat:sprintf('%05d', $rec500POS - 3)}
+{assign var="rec500" value="500"|cat:$rec500CAR|cat:sprintf('%05d', $rec500POS + 0)}
 
+{assign var="rec520POS" value=$rec500CAR + $rec500POS}
+{assign var="rec520CAR" value=sprintf('%04d', strlen($publication->getLocalizedData('abstract', 'pt_BR')) + 3)}
+{assign var="rec520" value="500"|cat:$rec520CAR|cat:sprintf('%05d', $rec520POS + 0)}
 
 {assign var="numAutoresAdicionais" value=count($additionalAuthors)}
 {assign var="rec700All" value=''} 
@@ -214,15 +212,15 @@
         {/if}
 
         {assign var="rec7uuCAR" value=str_replace(['-', ' '], '', sprintf('%04d', strlen($seteZeroZero)))}
-        {assign var="rec7uuPOS" value=sprintf('%05d', $rec500CAR + $rec500POS-3)}
+        {assign var="rec7uuPOS" value=sprintf('%05d', $rec520CAR + $rec520POS-3)}
         {assign var="rec7uu" value="700{$rec7uuCAR}{$rec7uuPOS}"}
 
         {assign var="additionalAuthorsExporter" value="$additionalAuthorsExporter{$rec7uu}"}
 
        
         
-        {assign var="rec500POS" value=$rec7uuPOS}
-        {assign var="rec500CAR" value=str_replace(['-', ' '], '', sprintf('%04d', strlen($seteZeroZero) + 3))}
+        {assign var="rec520POS" value=$rec7uuPOS}
+        {assign var="rec520CAR" value=str_replace(['-', ' '], '', sprintf('%04d', strlen($seteZeroZero) + 3))}
         {assign var="rec7uuAll" value=$rec7uuAll|cat:$rec7uu} 
     {else}
         {assign var="firstAuthor" value=false}
@@ -232,23 +230,34 @@
 {assign var="rec7uuAll" value=str_replace(" ", "", $rec7uuAll)}
 
 
-{assign var="rec856APOS" value=$rec500CAR + $rec500POS}
-{assign var="rec856ACAR" value=sprintf('%04d', strlen($oitoCincoMeiaA) - 1)}
+
+
+{assign var="rec773POS" value=$rec520CAR + $rec520POS}
+{assign var="rec773CAR" value=sprintf('%04d', strlen($seteSeteTres) - 1)}
 
 {if $numAutoresAdicionais > 0}
-    {assign var="rec856APOS" value=$recSetCAR + $recSetPOS}
-    {assign var="rec856ACAR" value=sprintf('%04d', strlen($oitoCincoMeiaA) - 1)}
+    {assign var="rec773POS" value=$recSetCAR + $recSetPOS}
+    {assign var="rec773CAR" value=sprintf('%04d', strlen($seteSeteTres) - 1)}
 {/if}
+{assign var="rec773" value="773"|cat:$rec773CAR|cat:sprintf('%05d', $rec773POS - 3)}
 
-{assign var="rec856A" value="856"|cat:$rec856ACAR|cat:sprintf('%05d', $rec856APOS - 3)}
 
 
-{assign var="rec945POS" value=$rec856ACAR + $rec856APOS}
+{assign var="rec856POS" value=$rec773CAR + $rec773POS}
+{assign var="rec856CAR" value=sprintf('%04d', strlen($oitoCincoMeiaA) + 1)}
+{assign var="rec856A" value="856"|cat:$rec856CAR|cat:sprintf('%05d', $rec856POS - 3)}
+
+
+
+
+{assign var="rec940POS" value=$rec856CAR + $rec856POS}
+{assign var="rec940CAR" value=sprintf('%04d', strlen($noveQuatroZero) + 1)}
+{assign var="rec940" value="940"|cat:$rec940CAR|cat:sprintf('%05d', $rec940POS - 3)}
+
+
+{assign var="rec945POS" value=$rec940CAR + $rec940POS}
 {assign var="rec945CAR" value=sprintf('%04d', strlen($noveQuatroCinco) + 1)}
 {assign var="rec945" value="945"|cat:$rec945CAR|cat:sprintf('%05d', $rec945POS - 3)}
-
-
-
 
 
 
@@ -268,7 +277,7 @@
     document.addEventListener('DOMContentLoaded', function() {
         var downloadButton = document.getElementById('downloadButton');
         downloadButton.addEventListener('click', function() {
-            var text = "{$totalcaracteres}nam {$totalautores}a 4500 {$rec005|escape:'javascript'}{$rec008|escape:'javascript'}{$rec024|escape:'javascript'}{$rec040|escape:'javascript'}{$rec041|escape:'javascript'}{$rec044|escape:'javascript'}{$rec100|escape:'javascript'}{$rec242|escape:'javascript'}{$rec245|escape:'javascript'}{$rec260|escape:'javascript'}{$rec500|escape:'javascript'}{$rec7uuAll|escape:'javascript'}{$recSetAll|escape:'javascript'}{$rec856A|escape:'javascript'}{$rec945|escape:'javascript'}{$zeroZeroCinco|escape:'javascript'}{$zeroZeroOito|escape:'javascript'}{$zeroDoisQuatro|escape:'javascript'}{$zeroQuatroZero|escape:'javascript'}{$zeroQuatroUm|escape:'javascript'}{$zeroQuatroQuatro|escape:'javascript'}{$umZeroZero|escape:'javascript'}{$doisQuatroCinco|escape:'javascript'}{$doisMeiaZero|escape:'javascript'}{$cincoZeroZero|escape:'javascript'}{$additionalAuthorsExport|escape:'javascript'}{$oitoCincoMeiaA|escape:'javascript'}{$noveQuatroCinco|escape:'javascript'}";
+            var text = "{$totalcaracteres}nam {$totalautores}a 4500 {$rec005|escape:'javascript'}{$rec008|escape:'javascript'}{$rec024|escape:'javascript'}{$rec040|escape:'javascript'}{$rec041|escape:'javascript'}{$rec044|escape:'javascript'}{$rec100|escape:'javascript'}{$rec242|escape:'javascript'}{$rec245|escape:'javascript'}{$rec260|escape:'javascript'}{$rec300|escape:'javascript'}{$rec500|escape:'javascript'}{$rec520|escape:'javascript'}{$rec7uuAll|escape:'javascript'}{$recSetAll|escape:'javascript'}{$rec856A|escape:'javascript'}{$rec945|escape:'javascript'}{$zeroZeroCinco|escape:'javascript'}{$zeroZeroOito|escape:'javascript'}{$zeroDoisQuatro|escape:'javascript'}{$zeroQuatroZero|escape:'javascript'}{$zeroQuatroUm|escape:'javascript'}{$zeroQuatroQuatro|escape:'javascript'}{$umZeroZero|escape:'javascript'}{$doisQuatroCinco|escape:'javascript'}{$doisMeiaZero|escape:'javascript'}{$cincoZeroZero|escape:'javascript'}{$additionalAuthorsExport|escape:'javascript'}{$oitoCincoMeiaA|escape:'javascript'}{$noveQuatroCinco|escape:'javascript'}";
             var fileName = 'ojs.mrc'; // Nome do arquivo a ser baixado
             var blob = new Blob([text], { type: 'text/plain' });
             if (window.navigator.msSaveOrOpenBlob) {
@@ -359,7 +368,10 @@
     {elseif $month == 'Dec'}{assign var="translatedMonth" value="Dez."}
     {/if}
     {assign var="formattedDate" value=$translatedMonth|cat:' '|cat:date('Y', $timestamp)}
-<b>773= </b>{$currentContext->getLocalizedName()} dCidade {$issue->getIssueIdentification()}, {$submissionPages|escape}, {$formattedDate} {$currentContext->getData('onlineIssn')}<br>
+
+{assign var="seteSeteTres" value="{$currentContext->getLocalizedName()} dCidade {$issue->getIssueIdentification()}, {$submissionPages|escape}, {$formattedDate} {$currentContext->getData('onlineIssn')}"}
+
+<b>773= </b>{$seteSeteTres}<br>
 
 <b>856a= </b>{$oitoCincoMeiaA}<br>
 
@@ -380,16 +392,16 @@
 {assign var="publicationYear" value=date('Y', strtotime($publicationDate))}
 {assign var="sectionTitle" value=$section->getLocalizedTitle()|lower|strip}
 {if $sectionTitle == 'artigo' or $sectionTitle == 'artigos'}
-    <b>945= </b>aPbARTIGO DE PERIODICOc01j{$publicationYear}lNACIONAL
+{assign var="noveQuatroCinco" value="<b>945= </b>aPbARTIGO DE PERIODICOc01j{$publicationYear}lNACIONAL"}
 {elseif $sectionTitle == 'resenha' or $sectionTitle == 'resenhas'}
-    <b>945= </b>aPbARTIGO DE PERIODICO-RESENHAc03j{$publicationYear}lNACIONAL
+    {assign var="noveQuatroCinco" value="<b>945= </b>aPbARTIGO DE PERIODICO-RESENHAc03j{$publicationYear}lNACIONAL"}
 {elseif $sectionTitle == 'editorial'}
-    <b>945= </b>aPbARTIGO DE PERIODICO-CARTA/EDITORIALc33j{$publicationYear}lNACIONAL
+    {assign var="noveQuatroCinco" value="<b>945= </b>aPbARTIGO DE PERIODICO-CARTA/EDITORIALc33j{$publicationYear}lNACIONAL"}
 {else}
-    <b>945= </b>aPbcxxj{$publicationYear}lNACIONAL
+    {assign var="noveQuatroCinco" value="<b>945= </b>aPbcxxj{$publicationYear}lNACIONAL"}
 {/if}
 
-
+{$noveQuatroCinco}<br>
 
 
 <hr>NUMERAL:<br>
