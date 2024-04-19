@@ -117,10 +117,7 @@
 {assign var="rec100CAR" value=sprintf('%04d', strlen($umZeroZero) + 3)}
 {assign var="rec100" value="100"|cat:$rec100CAR|cat:sprintf('%05d', $rec100POS)}
 
-{* Calculando o comprimento da variável $rec242 *}
-{assign var="rec242POS" value=$rec100CAR + $rec100POS}
-{assign var="rec242CAR" value=sprintf('%04d', strlen($doisQuatroDois) - 3)}
-{assign var="rec242" value="242"|cat:$rec242CAR|cat:sprintf('%05d', $rec242POS)}
+
 
 {* Calculando o comprimento da variável $rec245 *}
 {assign var="rec245POS" value=$rec242CAR + $rec242POS}
@@ -260,6 +257,7 @@
 
 
 {assign var="rec242" value=''}
+{assign var="rec242POS" value=$rec100CAR + $rec100POS}
 {foreach from=$currentContext->getSupportedLocales() item=locale}
     {assign var="localizedTitle" value=$publication->getLocalizedTitle($locale)}
     {if $localizedTitle && $locale != $primaryLocale}
@@ -267,12 +265,19 @@
         {if !$primaryTitle || $localizedTitle != $primaryTitle}
             {$localizedTitles[] = $localizedTitle}
             {assign var="titleLength" value=sprintf('%04d', strlen($localizedTitle))}
-            {assign var="rec242" value="$rec242 242$titleLength"}
+            {if $smarty.foreach.current.first}
+                {assign var="rec242" value="$rec242 242$titleLength"}
+            {else}
+                {assign var="rec242POSFormatted" value=sprintf('%05d', $rec242POS)}
+                {assign var="rec242" value="$rec242 242$titleLength($rec242POSFormatted)"}
+            {/if}
+            {assign var="rec242POS" value=$rec242POS + $titleLength}
         {/if}
     {/if}
 {/foreach}
 
 {$rec242}
+
 
 
 
