@@ -261,38 +261,7 @@
 
 
 
- {** BOTÃO*}
-    <button id="downloadButton" class="botao">Baixar Registro MARC</button>
-<style>
-    #downloadButton { font-weight: bold; padding: 10px 20px; background-color: #076fb1; color: #ffffff; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease; }
-#downloadButton:hover {
-    background-color: #055a85; 
-}   
-</style>
-{$authors=$publication->getData('authors')}
-{$totalAuthors = $authors|@count}
-{assign var="totalautores" value=22000193+($totalAuthors*12)}
-{assign var="totalcaracteres" value=sprintf('%05d', strlen($zeroZeroCinco) + strlen($zeroZeroOito) + strlen($zeroDoisQuatro) + strlen($zeroQuatroZero) + strlen($zeroQuatroUm) + strlen($zeroQuatroQuatro) + strlen($umZeroZero) + strlen($doisQuatroCinco) + strlen($doisMeiaZero) + strlen($cincoZeroZero) + strlen($additionalAuthorsExport) + strlen($oitoCincoMeiaA) + strlen($noveQuatroCinco) + 169)}
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var downloadButton = document.getElementById('downloadButton');
-        downloadButton.addEventListener('click', function() {
-            var text = "{$totalcaracteres}nam {$totalautores}a 4500 {$rec005|escape:'javascript'}{$rec008|escape:'javascript'}{$rec024|escape:'javascript'}{$rec040|escape:'javascript'}{$rec041|escape:'javascript'}{$rec044|escape:'javascript'}{$rec100|escape:'javascript'}{$rec242|escape:'javascript'}{$rec245|escape:'javascript'}{$rec260|escape:'javascript'}{$rec300|escape:'javascript'}{$rec500|escape:'javascript'}{$rec520|escape:'javascript'}{$rec7uuAll|escape:'javascript'}{$recSetAll|escape:'javascript'}{$rec856A|escape:'javascript'}{$rec945|escape:'javascript'}{$zeroZeroCinco|escape:'javascript'}{$zeroZeroOito|escape:'javascript'}{$zeroDoisQuatro|escape:'javascript'}{$zeroQuatroZero|escape:'javascript'}{$zeroQuatroUm|escape:'javascript'}{$zeroQuatroQuatro|escape:'javascript'}{$umZeroZero|escape:'javascript'}{$doisQuatroCinco|escape:'javascript'}{$doisMeiaZero|escape:'javascript'}{$cincoZeroZero|escape:'javascript'}{$additionalAuthorsExport|escape:'javascript'}{$oitoCincoMeiaA|escape:'javascript'}{$noveQuatroCinco|escape:'javascript'}";
-            var fileName = 'ojs.mrc'; // Nome do arquivo a ser baixado
-            var blob = new Blob([text], { type: 'text/plain' });
-            if (window.navigator.msSaveOrOpenBlob) {
-                window.navigator.msSaveBlob(blob, fileName);
-            } else {
-                var elem = window.document.createElement('a');
-                elem.href = window.URL.createObjectURL(blob);
-                elem.download = fileName;
-                document.body.appendChild(elem);
-                elem.click();
-                document.body.removeChild(elem);
-            }
-        });
-    });
-</script>
+ 
 <hr>TESTES:<br>
 
 
@@ -388,43 +357,77 @@
 {/foreach}
 
 
-{assign var="publicationDate" value=$publication->getData('datePublished')}
+<b>945= </b>{assign var="publicationDate" value=$publication->getData('datePublished')}
 {assign var="publicationYear" value=date('Y', strtotime($publicationDate))}
 {assign var="sectionTitle" value=$section->getLocalizedTitle()|lower|strip}
 {if $sectionTitle == 'artigo' or $sectionTitle == 'artigos'}
-{assign var="noveQuatroCinco" value="<b>945= </b>aPbARTIGO DE PERIODICOc01j{$publicationYear}lNACIONAL"}
+{assign var="noveQuatroCinco" value="aPbARTIGO DE PERIODICOc01j{$publicationYear}lNACIONAL"}
 {elseif $sectionTitle == 'resenha' or $sectionTitle == 'resenhas'}
-    {assign var="noveQuatroCinco" value="<b>945= </b>aPbARTIGO DE PERIODICO-RESENHAc03j{$publicationYear}lNACIONAL"}
+    {assign var="noveQuatroCinco" value="aPbARTIGO DE PERIODICO-RESENHAc03j{$publicationYear}lNACIONAL"}
 {elseif $sectionTitle == 'editorial'}
-    {assign var="noveQuatroCinco" value="<b>945= </b>aPbARTIGO DE PERIODICO-CARTA/EDITORIALc33j{$publicationYear}lNACIONAL"}
+    {assign var="noveQuatroCinco" value="aPbARTIGO DE PERIODICO-CARTA/EDITORIALc33j{$publicationYear}lNACIONAL"}
 {else}
-    {assign var="noveQuatroCinco" value="<b>945= </b>aPbcxxj{$publicationYear}lNACIONAL"}
+    {assign var="noveQuatroCinco" value="aPbcxxj{$publicationYear}lNACIONAL"}
 {/if}
 
 {$noveQuatroCinco}<br>
 
 
 <hr>NUMERAL:<br>
-<b>005= </b>{$rec005}<br>
-<b>008= </b>{$rec008}<br>
-<b>024= </b>{$rec024}<br>
-<b>040= </b>{$rec040}<br>
-<b>041= </b>{$rec041}<br>
-<b>044= </b>{$rec044}<br>
-<b>100= </b>{$rec100}<br>
-<b>242= </b>{$rec242|replace:' ':''}<br>
-<b>245= </b>{$rec245}<br>
-<b>260= </b>{$rec260}<br>
-<b>300= </b>{$rec300}<br>
-<b>500= </b>{$rec500}<br>
-<b>520= </b>{$rec520}<br>
-<b>700= </b>{$rec7uuAll}<br>
-<b>773= </b>{$rec773}<br>
-<b>856= </b>{$rec856A}<br>
-<b>940= </b>{$rec940}<br>
-<b>945= </b>{$rec945}<br>
+a{$rec005}b
+a{$rec008}b
+a{$rec024}b
+a{$rec040}b
+a{$rec041}b
+a{$rec044}b
+a{$rec100}b
+a{$rec242|replace:' ':''}b
+a{$rec245}b
+a{$rec260}b
+a{$rec300}b
+a{$rec500}b
+a{$rec520}b
+a{$rec7uuAll}b
+a{$rec773}b
+a{$rec856A}b
+a{$rec940}b
+a{$rec945}b
 
 
 <hr>
+
+
+{** BOTÃO*}
+    <button id="downloadButton" class="botao">Baixar Registro MARC</button>
+<style>
+    #downloadButton { font-weight: bold; padding: 10px 20px; background-color: #076fb1; color: #ffffff; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease; }
+#downloadButton:hover {
+    background-color: #055a85; 
+}   
+</style>
+{$authors=$publication->getData('authors')}
+{$totalAuthors = $authors|@count}
+{assign var="totalautores" value=22000193+($totalAuthors*12)}
+{assign var="totalcaracteres" value=sprintf('%05d', strlen($zeroZeroCinco) + strlen($zeroZeroOito) + strlen($zeroDoisQuatro) + strlen($zeroQuatroZero) + strlen($zeroQuatroUm) + strlen($zeroQuatroQuatro) + strlen($umZeroZero) + strlen($doisQuatroCinco) + strlen($doisMeiaZero) + strlen($cincoZeroZero) + strlen($additionalAuthorsExport) + strlen($oitoCincoMeiaA) + strlen($noveQuatroCinco) + 169)}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var downloadButton = document.getElementById('downloadButton');
+        downloadButton.addEventListener('click', function() {
+            var text = "{$totalcaracteres}nam {$totalautores}a 4500 {$rec005|escape:'javascript'}{$rec008|escape:'javascript'}{$rec024|escape:'javascript'}{$rec040|escape:'javascript'}{$rec041|escape:'javascript'}{$rec044|escape:'javascript'}{$rec100|escape:'javascript'}{$rec242|escape:'javascript'}{$rec245|escape:'javascript'}{$rec260|escape:'javascript'}{$rec300|escape:'javascript'}{$rec500|escape:'javascript'}{$rec520|escape:'javascript'}{$rec7uuAll|escape:'javascript'}{$rec773|escape:'javascript'}{$rec856A|escape:'javascript'}{$rec940|escape:'javascript'}{$rec945|escape:'javascript'}{$zeroZeroCinco|escape:'javascript'}{$zeroZeroOito|escape:'javascript'}{$zeroDoisQuatro|escape:'javascript'}{$zeroQuatroZero|escape:'javascript'}{$zeroQuatroUm|escape:'javascript'}{$zeroQuatroQuatro|escape:'javascript'}{$umZeroZero|escape:'javascript'}{$doisQuatroDois|escape:'javascript'}{$doisQuatroCinco|escape:'javascript'}{$doisMeiaZero|escape:'javascript'}{$tresZeroZero|escape:'javascript'}{$cincoZeroZero|escape:'javascript'}{$cincoDoisZero|escape:'javascript'}{$additionalAuthorsExport|escape:'javascript'}{$seteSeteTres|escape:'javascript'}{$oitoCincoMeiaA|escape:'javascript'}{$noveQuatroZero|escape:'javascript'}{$noveQuatroCinco|escape:'javascript'}";
+            var fileName = 'ojs.mrc'; // Nome do arquivo a ser baixado
+            var blob = new Blob([text], { type: 'text/plain' });
+            if (window.navigator.msSaveOrOpenBlob) {
+                window.navigator.msSaveBlob(blob, fileName);
+            } else {
+                var elem = window.document.createElement('a');
+                elem.href = window.URL.createObjectURL(blob);
+                elem.download = fileName;
+                document.body.appendChild(elem);
+                elem.click();
+                document.body.removeChild(elem);
+            }
+        });
+    });
+</script>
 </div>
 {/if}
