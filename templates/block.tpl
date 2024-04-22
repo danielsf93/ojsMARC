@@ -269,10 +269,23 @@
     {/if}
 {/foreach}
 
-
+{** rec945*}
+{assign var="publicationDate" value=$publication->getData('datePublished')}
+{assign var="publicationYear" value=date('Y', strtotime($publicationDate))}
+{assign var="sectionTitle" value=$section->getLocalizedTitle()|lower|strip}
+{if $sectionTitle == 'artigo' or $sectionTitle == 'artigos'}
+    {assign var="noveQuatroCinco" value="aPbARTIGO DE PERIODICOc01j{$publicationYear}lNACIONAL"}
+{elseif $sectionTitle == 'resenha' or $sectionTitle == 'resenhas'}
+    {assign var="noveQuatroCinco" value="aPbARTIGO DE PERIODICO-RESENHAc03j{$publicationYear}lNACIONAL"}
+{elseif $sectionTitle == 'editorial'}
+    {assign var="noveQuatroCinco" value="aPbARTIGO DE PERIODICO-CARTA/EDITORIALc33j{$publicationYear}lNACIONAL"}
+{else}
+    {assign var="noveQuatroCinco" value="aPbcxxj{$publicationYear}lNACIONAL"}
+{/if}
+{assign var="cleaned_noveQuatroCinco" value=$noveQuatroCinco|strip}
+{assign var="rec945CAR" value=sprintf('%04d', strlen($cleaned_noveQuatroCinco))}
 {assign var="rec945POS" value=$rec940CAR + $rec940POS}
-{assign var="rec945CAR" value=sprintf('%04d', strlen($noveQuatroCinco) + 1)}
-{assign var="rec945" value="945"|cat:$rec945CAR|cat:sprintf('%05d', $rec945POS - 3)}
+{assign var="rec945" value="945"|cat:$rec945CAR|cat:sprintf('%05d', $rec945POS)}
 
 
 
@@ -420,6 +433,10 @@
 {/if}
 
 {$noveQuatroCinco}<br>
+<hr>
+
+
+
 
 
 <hr>NUMERAL:<br>
