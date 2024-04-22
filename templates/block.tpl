@@ -283,6 +283,8 @@
 <b>041= </b>{$zeroQuatroUm}<br>
 <b>044= </b>{$zeroQuatroQuatro}<br>
 <b>100= </b>{$umZeroZero}<br>
+
+
 {assign var="localizedTitles" value=[]}
 {foreach from=$currentContext->getSupportedLocales() item=locale}
     {assign var="localizedTitle" value=$publication->getLocalizedTitle($locale)}
@@ -294,6 +296,20 @@
         {/if}
     {/if}
 {/foreach}
+
+{assign var="doisQuatroDois" value=''}  {* Iniciando a variável vazia *}
+{foreach from=$currentContext->getSupportedLocales() item=locale}
+    {assign var="localizedTitle" value=$publication->getLocalizedTitle($locale)}
+    {if $localizedTitle && $locale != $primaryLocale}
+        {assign var="primaryTitle" value=$publication->getLocalizedTitle($primaryLocale)}
+        {if !$primaryTitle || $localizedTitle != $primaryTitle}
+            {$localizedTitles[] = $localizedTitle}
+            {assign var="doisQuatroDois" value=$doisQuatroDois|cat:"00a{$localizedTitle}"}  {* Adicionando ao final da variável *}
+        {/if}
+    {/if}
+{/foreach}
+
+
 
 
 
