@@ -165,7 +165,7 @@
 
 {assign var="rec520POS" value=$rec500CAR + $rec500POS}
 {assign var="rec520CAR" value=sprintf('%04d', strlen($publication->getLocalizedData('abstract', 'pt_BR')) + 3)}
-{assign var="rec520" value="500"|cat:$rec520CAR|cat:sprintf('%05d', $rec520POS + 0)}
+{assign var="rec520" value="520"|cat:$rec520CAR|cat:sprintf('%05d', $rec520POS + 0)}
 
 {assign var="numAutoresAdicionais" value=count($additionalAuthors)}
 {assign var="rec700All" value=''} 
@@ -388,6 +388,24 @@
 {/foreach}
 
 
+{assign var="localizedAbstracts" value=[]}
+{foreach from=$currentContext->getSupportedLocales() item=locale}
+    {assign var="localizedData" value=$publication->getLocalizedData('abstract', $locale)}
+    {if $localizedData && $locale != $primaryLocale}
+        {assign var="primaryAbstract" value=$publication->getLocalizedData('abstract', $primaryLocale)}
+        {if !$primaryAbstract || $localizedData != $primaryAbstract}
+            {append var=localizedAbstracts value=$localizedData}
+        {/if}
+    {/if}
+{/foreach}
+{assign var="noveQuatroZero" value=""}
+{foreach from=$localizedAbstracts item=abstract}
+    {assign var="noveQuatroZero" value=$noveQuatroZero|cat:$abstract}
+{/foreach}
+
+
+
+
 <b>945= </b>{assign var="publicationDate" value=$publication->getData('datePublished')}
 {assign var="publicationYear" value=date('Y', strtotime($publicationDate))}
 {assign var="sectionTitle" value=$section->getLocalizedTitle()|lower|strip}
@@ -423,14 +441,6 @@ a{$rec773}b
 a{$rec856A}b
 a{$rec940All}b
 a{$rec945}b
-
-
-<hr>TESTE:<br>
-
-
-
-
-{$rec940All}  
 
 <hr>
 
