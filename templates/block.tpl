@@ -54,6 +54,9 @@
 
 {assign var="cincoZeroZero" value="aDisponível em: https://{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}. Acesso em: {$smarty.now|date_format:"%d.%m.%Y"}"}
 
+{assign var="cincoDoisZero" value=$publication->getLocalizedData('abstract', 'pt_BR')}
+
+
 {* Demais autores texto*}
 {assign var="additionalAuthors" value=[]}
 {foreach $authors as $index => $author}
@@ -297,14 +300,14 @@
     {/if}
 {/foreach}
 
-{assign var="doisQuatroDois" value=''}  {* Iniciando a variável vazia *}
+{assign var="doisQuatroDois" value=''} 
 {foreach from=$currentContext->getSupportedLocales() item=locale}
     {assign var="localizedTitle" value=$publication->getLocalizedTitle($locale)}
     {if $localizedTitle && $locale != $primaryLocale}
         {assign var="primaryTitle" value=$publication->getLocalizedTitle($primaryLocale)}
         {if !$primaryTitle || $localizedTitle != $primaryTitle}
             {$localizedTitles[] = $localizedTitle}
-            {assign var="doisQuatroDois" value=$doisQuatroDois|cat:"00a{$localizedTitle}"}  {* Adicionando ao final da variável *}
+            {assign var="doisQuatroDois" value=$doisQuatroDois|cat:"00a{$localizedTitle}"}
         {/if}
     {/if}
 {/foreach}
