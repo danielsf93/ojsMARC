@@ -251,11 +251,23 @@
 {assign var="rec856A" value="856"|cat:$rec856CAR|cat:sprintf('%05d', $rec856POS - 3)}
 
 
-
-
+{assign var="rec940All" value=''}  
 {assign var="rec940POS" value=$rec856CAR + $rec856POS}
-{assign var="rec940CAR" value=sprintf('%04d', strlen($noveQuatroZero) + 1)}
-{assign var="rec940" value="940"|cat:$rec940CAR|cat:sprintf('%05d', $rec940POS - 3)}
+
+{foreach from=$currentContext->getSupportedLocales() item=locale}
+    {assign var="localizedData" value=$publication->getLocalizedData('abstract', $locale)}
+    {if $localizedData && $locale != $primaryLocale}
+        {assign var="primaryAbstract" value=$publication->getLocalizedData('abstract', $primaryLocale)}
+        {if !$primaryAbstract || $localizedData != $primaryAbstract}
+            {assign var="noveQuatroZero" value="a{$localizedData}"}
+            {assign var="rec940CAR" value=sprintf('%04d', strlen($noveQuatroZero) - 1)}  
+            {assign var="rec940POSFormatted" value=sprintf('%05d', $rec940POS)}
+            {assign var="rec940" value="940"|cat:$rec940CAR|cat:$rec940POSFormatted}
+            {assign var="rec940All" value=$rec940All|cat:" "|cat:$rec940}
+            {assign var="rec940POS" value=$rec940POS + strlen($noveQuatroZero)}  
+        {/if}
+    {/if}
+{/foreach}
 
 
 {assign var="rec945POS" value=$rec940CAR + $rec940POS}
@@ -409,12 +421,18 @@ a{$rec520}b
 a{$rec7uuAll}b
 a{$rec773}b
 a{$rec856A}b
-a{$rec940}b
+a{$rec940All}b
 a{$rec945}b
 
 
-<hr>
+<hr>TESTE:<br>
 
+
+
+
+{$rec940All}  
+
+<hr>
 
 {** BOTÃO*}
     <button id="downloadButton" class="botao">Baixar Registro MARC</button>
@@ -432,7 +450,7 @@ a{$rec945}b
     document.addEventListener('DOMContentLoaded', function() {
         var downloadButton = document.getElementById('downloadButton');
         downloadButton.addEventListener('click', function() {
-            var text = "{$totalcaracteres}nam {$totalautores}a 4500 {$rec005|escape:'javascript'}{$rec008|escape:'javascript'}{$rec024|escape:'javascript'}{$rec040|escape:'javascript'}{$rec041|escape:'javascript'}{$rec044|escape:'javascript'}{$rec100|escape:'javascript'}{$rec242|escape:'javascript'}{$rec245|escape:'javascript'}{$rec260|escape:'javascript'}{$rec300|escape:'javascript'}{$rec500|escape:'javascript'}{$rec520|escape:'javascript'}{$rec7uuAll|escape:'javascript'}{$rec773|escape:'javascript'}{$rec856A|escape:'javascript'}{$rec940|escape:'javascript'}{$rec945|escape:'javascript'}{$zeroZeroCinco|escape:'javascript'}{$zeroZeroOito|escape:'javascript'}{$zeroDoisQuatro|escape:'javascript'}{$zeroQuatroZero|escape:'javascript'}{$zeroQuatroUm|escape:'javascript'}{$zeroQuatroQuatro|escape:'javascript'}{$umZeroZero|escape:'javascript'}{$doisQuatroDois|escape:'javascript'}{$doisQuatroCinco|escape:'javascript'}{$doisMeiaZero|escape:'javascript'}{$tresZeroZero|escape:'javascript'}{$cincoZeroZero|escape:'javascript'}{$cincoDoisZero|escape:'javascript'}{$additionalAuthorsExport|escape:'javascript'}{$seteSeteTres|escape:'javascript'}{$oitoCincoMeiaA|escape:'javascript'}{$noveQuatroZero|escape:'javascript'}{$noveQuatroCinco|escape:'javascript'}";
+            var text = "{$totalcaracteres}nam {$totalautores}a 4500 {$rec005|escape:'javascript'}{$rec008|escape:'javascript'}{$rec024|escape:'javascript'}{$rec040|escape:'javascript'}{$rec041|escape:'javascript'}{$rec044|escape:'javascript'}{$rec100|escape:'javascript'}{$rec242|escape:'javascript'}{$rec245|escape:'javascript'}{$rec260|escape:'javascript'}{$rec300|escape:'javascript'}{$rec500|escape:'javascript'}{$rec520|escape:'javascript'}{$rec7uuAll|escape:'javascript'}{$rec773|escape:'javascript'}{$rec856A|escape:'javascript'}{$rec940All|escape:'javascript'}{$rec945|escape:'javascript'}{$zeroZeroCinco|escape:'javascript'}{$zeroZeroOito|escape:'javascript'}{$zeroDoisQuatro|escape:'javascript'}{$zeroQuatroZero|escape:'javascript'}{$zeroQuatroUm|escape:'javascript'}{$zeroQuatroQuatro|escape:'javascript'}{$umZeroZero|escape:'javascript'}{$doisQuatroDois|escape:'javascript'}{$doisQuatroCinco|escape:'javascript'}{$doisMeiaZero|escape:'javascript'}{$tresZeroZero|escape:'javascript'}{$cincoZeroZero|escape:'javascript'}{$cincoDoisZero|escape:'javascript'}{$additionalAuthorsExport|escape:'javascript'}{$seteSeteTres|escape:'javascript'}{$oitoCincoMeiaA|escape:'javascript'}{$noveQuatroZero|escape:'javascript'}{$noveQuatroCinco|escape:'javascript'}";
             var fileName = 'ojs.mrc'; // Nome do arquivo a ser baixado
             var blob = new Blob([text], { type: 'text/plain' });
             if (window.navigator.msSaveOrOpenBlob) {
