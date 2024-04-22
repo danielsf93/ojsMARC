@@ -231,15 +231,15 @@
 
 
 
-
-{assign var="rec773POS" value=$rec520CAR + $rec520POS}
-{assign var="rec773CAR" value=sprintf('%04d', strlen($seteSeteTres) - 1)}
+{assign var="seteSeteTres" value="{$currentContext->getLocalizedName()} dCidade {$issue->getIssueIdentification()}, {$submissionPages|escape}, {$formattedDate} {$currentContext->getData('onlineIssn')}"}
+{assign var="rec773POS" value=$rec520CAR + $rec520POS}  {* Valor base para POS *}
+{assign var="rec773CAR" value=sprintf('%04d', max(0, strlen($seteSeteTres) - 1))}  {* Corrigir CAR com máximo 0 *}
 
 {if $numAutoresAdicionais > 0}
-    {assign var="rec773POS" value=$recSetCAR + $recSetPOS}
-    {assign var="rec773CAR" value=sprintf('%04d', strlen($seteSeteTres) - 1)}
+    {assign var="rec773POS" value=$rec773POS + $rec773CAR}  {* Somar valor correto ao POS *}
 {/if}
-{assign var="rec773" value="773"|cat:$rec773CAR|cat:sprintf('%05d', $rec773POS - 3)}
+
+{assign var="rec773" value="773"|cat:$rec773CAR|cat:sprintf('%05d', max(0, $rec773POS - 3))}  {* Formatar CAR e POS corretamente *}
 
 
 
