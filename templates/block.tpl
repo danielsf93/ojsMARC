@@ -10,7 +10,7 @@
 
 {assign var="zeroZeroCinco" value="$dataFormatada"}
 
-{assign var="zeroZeroOito" value="      s2023    bl            000 0 por d7"}
+{assign var="zeroZeroOito" value="230224s2020    bl            000 0 por d7 "}
         
 {assign var="zeroDoisQuatro" value="a{$publication->getStoredPubId('doi')|escape}2DOI"}
 
@@ -50,11 +50,16 @@
 
 {assign var="doisQuatroCinco" value="10a{$publication->getLocalizedFullTitle()|escape}h[recurso eletrônico]  "}
 
-{assign var="doisMeiaZero" value="a LOCALb{$holder}c{$publication->getData('copyrightYear')}0 "}
+{assign var=submissionPages value=$publication->getData('pages')}
+{assign var="tresZeroZero" value="ap. {$submissionPages}  "}
 
-{assign var="cincoZeroZero" value="aDisponível em: https://{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}. Acesso em: {$smarty.now|date_format:"%d.%m.%Y"}"}
+{assign var="doisMeiaZero" value="a LOCALb{$holder}c{$publication->getData('copyrightYear')}  "}
 
-{assign var="cincoDoisZero" value=$publication->getLocalizedData('abstract', 'pt_BR')}
+{assign var="cincoZeroZero" value="aDisponível em: https://{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}. Acesso em: {$smarty.now|date_format:"%d.%m.%Y"}  "}
+
+{assign var="resumoPtbr" value=$publication->getLocalizedData('abstract', 'pt_BR')}
+
+{assign var="cincoDoisZero" value="a{$resumoPtbr}"}
 
 
 {* Demais autores texto*}
@@ -79,14 +84,14 @@
     {/if}
 {/foreach}
    
-{assign var="oitoCincoMeiaA" value="4 zClicar sobre o botão para acesso ao texto completouhttps://doi.org/{$publication->getStoredPubId('doi')|escape}3DOI"}
+{assign var="oitoCincoMeiaA" value="4 zClicar sobre o botão para acesso ao texto completouhttps://doi.org/{$publication->getStoredPubId('doi')|escape}3DOI "}
 
 {assign var="ldr" value="01086nab   200277Ia 45"} 
 
 
 {** CALCULO DO NUMERAL*}
 {* Calculando o comprimento da variável $rec005 *}
-{assign var="rec005POS" value=0}
+{assign var="rec005POS" value=24}
 {assign var="rec005CAR" value=sprintf('%04d', strlen($zeroZeroCinco) + 0)}
 {assign var="rec005" value="005"|cat:$rec005CAR|cat:sprintf('%05d', $rec005POS)}
 
@@ -234,7 +239,7 @@
 
 
 
-{assign var="seteSeteTres" value="{$currentContext->getLocalizedName()} dCidade {$issue->getIssueIdentification()}, {$submissionPages|escape}, {$formattedDate} {$currentContext->getData('onlineIssn')}"}
+{assign var="seteSeteTres" value=" t{$currentContext->getLocalizedName()} dCidade {$issue->getIssueIdentification()}, {$submissionPages|escape}, {$formattedDate} {$currentContext->getData('onlineIssn')}"}
 {assign var="rec773POS" value=$rec520CAR + $rec520POS}  {* Valor base para POS *}
 {assign var="rec773CAR" value=sprintf('%04d', max(0, strlen($seteSeteTres) - 1))}  {* Corrigir CAR com máximo 0 *}
 
@@ -274,13 +279,13 @@
 {assign var="publicationYear" value=date('Y', strtotime($publicationDate))}
 {assign var="sectionTitle" value=$section->getLocalizedTitle()|lower|strip}
 {if $sectionTitle == 'artigo' or $sectionTitle == 'artigos'}
-    {assign var="noveQuatroCinco" value="aPbARTIGO DE PERIODICOc01j{$publicationYear}lNACIONAL"}
+    {assign var="noveQuatroCinco" value=" aPbARTIGO DE PERIODICOc01j{$publicationYear}lNACIONAL"}
 {elseif $sectionTitle == 'resenha' or $sectionTitle == 'resenhas'}
-    {assign var="noveQuatroCinco" value="aPbARTIGO DE PERIODICO-RESENHAc03j{$publicationYear}lNACIONAL"}
+    {assign var="noveQuatroCinco" value=" aPbARTIGO DE PERIODICO-RESENHAc03j{$publicationYear}lNACIONAL"}
 {elseif $sectionTitle == 'editorial'}
-    {assign var="noveQuatroCinco" value="aPbARTIGO DE PERIODICO-CARTA/EDITORIALc33j{$publicationYear}lNACIONAL"}
+    {assign var="noveQuatroCinco" value=" aPbARTIGO DE PERIODICO-CARTA/EDITORIALc33j{$publicationYear}lNACIONAL"}
 {else}
-    {assign var="noveQuatroCinco" value="aPbcxxj{$publicationYear}lNACIONAL"}
+    {assign var="noveQuatroCinco" value=" aPbcxxj{$publicationYear}lNACIONAL"}
 {/if}
 {assign var="cleaned_noveQuatroCinco" value=$noveQuatroCinco|strip}
 {assign var="rec945CAR" value=sprintf('%04d', strlen($cleaned_noveQuatroCinco))}
@@ -344,6 +349,7 @@
 <b>245= </b>{$doisQuatroCinco}<br>
 <b>260= </b>{$doisMeiaZero}<br>
 {assign var=submissionPages value=$publication->getData('pages')}
+
 <b>300= </b>{$submissionPages|escape}<br>
 <b>500= </b>{$cincoZeroZero}<br>
 <b>520= </b>{$publication->getLocalizedData('abstract', 'pt_BR')}   <br>
@@ -382,7 +388,7 @@
     {/if}
     {assign var="formattedDate" value=$translatedMonth|cat:' '|cat:date('Y', $timestamp)}
 
-{assign var="seteSeteTres" value="{$currentContext->getLocalizedName()} dCidade {$issue->getIssueIdentification()}, {$submissionPages|escape}, {$formattedDate} {$currentContext->getData('onlineIssn')}"}
+{assign var="seteSeteTres" value=" t{$currentContext->getLocalizedName()} dCidade {$issue->getIssueIdentification()}, {$submissionPages|escape}, {$formattedDate} {$currentContext->getData('onlineIssn')}"}
 
 <b>773= </b>{$seteSeteTres}<br>
 
@@ -411,9 +417,10 @@
         {/if}
     {/if}
 {/foreach}
+
 {assign var="noveQuatroZero" value=""}
 {foreach from=$localizedAbstracts item=abstract}
-    {assign var="noveQuatroZero" value=$noveQuatroZero|cat:$abstract}
+    {assign var="noveQuatroZero" value=$noveQuatroZero|cat:" a"|cat:$abstract|cat:" "}
 {/foreach}
 
 
@@ -423,13 +430,13 @@
 {assign var="publicationYear" value=date('Y', strtotime($publicationDate))}
 {assign var="sectionTitle" value=$section->getLocalizedTitle()|lower|strip}
 {if $sectionTitle == 'artigo' or $sectionTitle == 'artigos'}
-{assign var="noveQuatroCinco" value="aPbARTIGO DE PERIODICOc01j{$publicationYear}lNACIONAL"}
+{assign var="noveQuatroCinco" value=" aPbARTIGO DE PERIODICOc01j{$publicationYear}lNACIONAL"}
 {elseif $sectionTitle == 'resenha' or $sectionTitle == 'resenhas'}
-    {assign var="noveQuatroCinco" value="aPbARTIGO DE PERIODICO-RESENHAc03j{$publicationYear}lNACIONAL"}
+    {assign var="noveQuatroCinco" value=" aPbARTIGO DE PERIODICO-RESENHAc03j{$publicationYear}lNACIONAL"}
 {elseif $sectionTitle == 'editorial'}
-    {assign var="noveQuatroCinco" value="aPbARTIGO DE PERIODICO-CARTA/EDITORIALc33j{$publicationYear}lNACIONAL"}
+    {assign var="noveQuatroCinco" value=" aPbARTIGO DE PERIODICO-CARTA/EDITORIALc33j{$publicationYear}lNACIONAL"}
 {else}
-    {assign var="noveQuatroCinco" value="aPbcxxj{$publicationYear}lNACIONAL"}
+    {assign var="noveQuatroCinco" value=" aPbcxxj{$publicationYear}lNACIONAL"}
 {/if}
 
 {$noveQuatroCinco}<br>
@@ -477,7 +484,7 @@ a{$rec945}b
     document.addEventListener('DOMContentLoaded', function() {
         var downloadButton = document.getElementById('downloadButton');
         downloadButton.addEventListener('click', function() {
-            var text = "{$totalcaracteres}nam {$totalautores}a 4500 {$rec005|escape:'javascript'}{$rec008|escape:'javascript'}{$rec024|escape:'javascript'}{$rec040|escape:'javascript'}{$rec041|escape:'javascript'}{$rec044|escape:'javascript'}{$rec100|escape:'javascript'}{$rec242|escape:'javascript'}{$rec245|escape:'javascript'}{$rec260|escape:'javascript'}{$rec300|escape:'javascript'}{$rec500|escape:'javascript'}{$rec520|escape:'javascript'}{$rec7uuAll|escape:'javascript'}{$rec773|escape:'javascript'}{$rec856A|escape:'javascript'}{$rec940All|escape:'javascript'}{$rec945|escape:'javascript'}{$zeroZeroCinco|escape:'javascript'}{$zeroZeroOito|escape:'javascript'}{$zeroDoisQuatro|escape:'javascript'}{$zeroQuatroZero|escape:'javascript'}{$zeroQuatroUm|escape:'javascript'}{$zeroQuatroQuatro|escape:'javascript'}{$umZeroZero|escape:'javascript'}{$doisQuatroDois|escape:'javascript'}{$doisQuatroCinco|escape:'javascript'}{$doisMeiaZero|escape:'javascript'}{$tresZeroZero|escape:'javascript'}{$cincoZeroZero|escape:'javascript'}{$cincoDoisZero|escape:'javascript'}{$additionalAuthorsExport|escape:'javascript'}{$seteSeteTres|escape:'javascript'}{$oitoCincoMeiaA|escape:'javascript'}{$noveQuatroZero|escape:'javascript'}{$noveQuatroCinco|escape:'javascript'}";
+            var text = "{$totalcaracteres}nab   200277Ia 45  {$rec005|escape:'javascript'}{$rec008|escape:'javascript'}{$rec024|escape:'javascript'}{$rec040|escape:'javascript'}{$rec041|escape:'javascript'}{$rec044|escape:'javascript'}{$rec100|escape:'javascript'}{$rec242|escape:'javascript'}{$rec245|escape:'javascript'}{$rec260|escape:'javascript'}{$rec300|escape:'javascript'}{$rec500|escape:'javascript'}{$rec520|escape:'javascript'}{$rec7uuAll|escape:'javascript'}{$rec773|escape:'javascript'}{$rec856A|escape:'javascript'}{$rec940All|escape:'javascript'}{$rec945|escape:'javascript'}{$zeroZeroCinco|escape:'javascript'}{$zeroZeroOito|escape:'javascript'}{$zeroDoisQuatro|escape:'javascript'}{$zeroQuatroZero|escape:'javascript'}{$zeroQuatroUm|escape:'javascript'}{$zeroQuatroQuatro|escape:'javascript'}{$umZeroZero|escape:'javascript'}{$doisQuatroDois|escape:'javascript'}{$doisQuatroCinco|escape:'javascript'}{$doisMeiaZero|escape:'javascript'}{$tresZeroZero|escape:'javascript'}{$cincoZeroZero|escape:'javascript'}{$cincoDoisZero|escape:'javascript'}{$additionalAuthorsExport|escape:'javascript'}{$seteSeteTres|escape:'javascript'}{$oitoCincoMeiaA|escape:'javascript'}{$noveQuatroZero|escape:'javascript'}{$noveQuatroCinco|escape:'javascript'}";
             var fileName = 'ojs.mrc'; // Nome do arquivo a ser baixado
             var blob = new Blob([text], { type: 'text/plain' });
             if (window.navigator.msSaveOrOpenBlob) {
