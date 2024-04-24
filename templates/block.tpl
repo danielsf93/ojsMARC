@@ -97,11 +97,11 @@
 
 {* Calculando o comprimento da variável $rec008 *}
 {assign var="rec008POS" value=$rec005CAR + $rec005POS}
-{assign var="rec008CAR" value=sprintf('%04d', strlen($zeroZeroOito) + 0)}
+{assign var="rec008CAR" value=sprintf('%04d', strlen($zeroZeroOito) - 3)}
 {assign var="rec008" value="008"|cat:$rec008CAR|cat:sprintf('%05d', $rec008POS)}
 
 {* Calculando o comprimento da variável $rec024 *}
-{assign var="rec024POS" value=$rec005CAR + $rec005POS}
+{assign var="rec024POS" value=$rec008CAR + $rec008POS}
 {assign var="rec024CAR" value=sprintf('%04d', strlen($zeroDoisQuatro) + 3)}
 {assign var="rec024" value="024"|cat:$rec024CAR|cat:sprintf('%05d', $rec024POS)}
 
@@ -134,7 +134,7 @@
         {assign var="primaryTitle" value=$publication->getLocalizedTitle($primaryLocale)}
         {if !$primaryTitle || $localizedTitle != $primaryTitle}
             {$localizedTitles[] = $localizedTitle}
-            {assign var="titleLength" value=sprintf('%04d', strlen($localizedTitle))}
+            {assign var="titleLength" value=sprintf('%04d', strlen($localizedTitle) + 5)}
             {if $smarty.foreach.current.first}
                 {assign var="rec242" value="$rec242 242$titleLength"}
             {else}
@@ -161,11 +161,11 @@
 
 {assign var="rec300POS" value=$rec260CAR + $rec260POS}
 {assign var=submissionPages value=$publication->getData('pages')}
-{assign var="rec300CAR" value=sprintf('%04d', strlen($submissionPages|escape) + 0)}
+{assign var="rec300CAR" value=sprintf('%04d', strlen($submissionPages|escape) + 8)}
 {assign var="rec300" value="300"|cat:$rec300CAR|cat:sprintf('%05d', $rec300POS)}
 
 {assign var="rec500POS" value=$rec300CAR + $rec300POS}
-{assign var="rec500CAR" value=sprintf('%04d', strlen($cincoZeroZero) + 3)}
+{assign var="rec500CAR" value=sprintf('%04d', strlen($cincoZeroZero) + 0)}
 {assign var="rec500" value="500"|cat:$rec500CAR|cat:sprintf('%05d', $rec500POS + 0)}
 
 {assign var="rec520POS" value=$rec500CAR + $rec500POS}
