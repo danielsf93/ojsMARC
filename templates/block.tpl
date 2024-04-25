@@ -91,7 +91,7 @@
 
 {** CALCULO DO NUMERAL*}
 {* Calculando o comprimento da variável $rec005 *}
-{assign var="rec005POS" value=24}
+{assign var="rec005POS" value=00}
 {assign var="rec005CAR" value=sprintf('%04d', strlen($zeroZeroCinco) + 0)}
 {assign var="rec005" value="005"|cat:$rec005CAR|cat:sprintf('%05d', $rec005POS)}
 
@@ -300,6 +300,12 @@
 
 
 
+<b>Títulos em diferentes idiomas, ignorando o idioma primário:</b><br>
+{foreach from=$currentContext->getSupportedLocales() item=locale}
+    {if $locale != $primaryLocale}
+        {$publication->getLocalizedTitle($locale)}<br>
+    {/if}
+{/foreach}<br>
 
 
 
