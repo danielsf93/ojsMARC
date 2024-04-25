@@ -169,7 +169,7 @@
 {assign var="rec500" value="500"|cat:$rec500CAR|cat:sprintf('%05d', $rec500POS + 0)}
 
 {assign var="rec520POS" value=$rec500CAR + $rec500POS}
-{assign var="rec520CAR" value=sprintf('%04d', strlen($publication->getLocalizedData('abstract', 'pt_BR')) + 3)}
+{assign var="rec520CAR" value=sprintf('%04d', strlen($publication->getLocalizedData('abstract', 'pt_BR')) + 5)}
 {assign var="rec520" value="520"|cat:$rec520CAR|cat:sprintf('%05d', $rec520POS + 0)}
 
 {assign var="numAutoresAdicionais" value=count($additionalAuthors)}
@@ -220,7 +220,7 @@
         {/if}
 
         {assign var="rec7uuCAR" value=str_replace(['-', ' '], '', sprintf('%04d', strlen($seteZeroZero)))}
-        {assign var="rec7uuPOS" value=sprintf('%05d', $rec520CAR + $rec520POS-3)}
+        {assign var="rec7uuPOS" value=sprintf('%05d', $rec520CAR + $rec520POS-0)}
         {assign var="rec7uu" value="700{$rec7uuCAR}{$rec7uuPOS}"}
 
         {assign var="additionalAuthorsExporter" value="$additionalAuthorsExporter{$rec7uu}"}
@@ -228,7 +228,7 @@
        
         
         {assign var="rec520POS" value=$rec7uuPOS}
-        {assign var="rec520CAR" value=str_replace(['-', ' '], '', sprintf('%04d', strlen($seteZeroZero) + 3))}
+        {assign var="rec520CAR" value=str_replace(['-', ' '], '', sprintf('%04d', strlen($seteZeroZero) + 0))}
         {assign var="rec7uuAll" value=$rec7uuAll|cat:$rec7uu} 
     {else}
         {assign var="firstAuthor" value=false}
@@ -241,23 +241,23 @@
 
 {assign var="seteSeteTres" value=" t{$currentContext->getLocalizedName()} dCidade {$issue->getIssueIdentification()}, {$submissionPages|escape}, {$formattedDate} {$currentContext->getData('onlineIssn')}"}
 {assign var="rec773POS" value=$rec520CAR + $rec520POS}  {* Valor base para POS *}
-{assign var="rec773CAR" value=sprintf('%04d', max(0, strlen($seteSeteTres) - 1))}  {* Corrigir CAR com máximo 0 *}
+{assign var="rec773CAR" value=sprintf('%04d', max(0, strlen($seteSeteTres) + 11))}  {* Corrigir CAR com máximo 0 *}
 
 {if $numAutoresAdicionais > 0}
     {assign var="rec773POS" value=$rec773POS + $rec773CAR}  {* Somar valor correto ao POS *}
 {/if}
 
-{assign var="rec773" value="773"|cat:$rec773CAR|cat:sprintf('%05d', max(0, $rec773POS - 3))}  {* Formatar CAR e POS corretamente *}
+{assign var="rec773" value="773"|cat:$rec773CAR|cat:sprintf('%05d', max(0, $rec773POS - 2))}  {* Formatar CAR e POS corretamente *}
 
 
 
 {assign var="rec856POS" value=$rec773CAR + $rec773POS}
 {assign var="rec856CAR" value=sprintf('%04d', strlen($oitoCincoMeiaA) + 1)}
-{assign var="rec856A" value="856"|cat:$rec856CAR|cat:sprintf('%05d', $rec856POS - 3)}
+{assign var="rec856A" value="856"|cat:$rec856CAR|cat:sprintf('%05d', $rec856POS - 2)}
 
 
 {assign var="rec940All" value=''}  
-{assign var="rec940POS" value=$rec856CAR + $rec856POS}
+{assign var="rec940POS" value=$rec856CAR + $rec856POS - 5}
 
 {foreach from=$currentContext->getSupportedLocales() item=locale}
     {assign var="localizedData" value=$publication->getLocalizedData('abstract', $locale)}
@@ -265,11 +265,11 @@
         {assign var="primaryAbstract" value=$publication->getLocalizedData('abstract', $primaryLocale)}
         {if !$primaryAbstract || $localizedData != $primaryAbstract}
             {assign var="noveQuatroZero" value="a{$localizedData}"}
-            {assign var="rec940CAR" value=sprintf('%04d', strlen($noveQuatroZero) - 1)}  
+            {assign var="rec940CAR" value=sprintf('%04d', strlen($noveQuatroZero) + 2)}  
             {assign var="rec940POSFormatted" value=sprintf('%05d', $rec940POS)}
             {assign var="rec940" value="940"|cat:$rec940CAR|cat:$rec940POSFormatted}
             {assign var="rec940All" value=$rec940All|cat:" "|cat:$rec940}
-            {assign var="rec940POS" value=$rec940POS + strlen($noveQuatroZero)}  
+            {assign var="rec940POS" value=$rec940POS + strlen($noveQuatroZero) + 2}  
         {/if}
     {/if}
 {/foreach}
