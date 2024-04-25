@@ -53,7 +53,7 @@
 {assign var=submissionPages value=$publication->getData('pages')}
 {assign var="tresZeroZero" value="ap. {$submissionPages}  "}
 
-{assign var="doisMeiaZero" value="a LOCALb{$holder}c{$publication->getData('copyrightYear')}  "}
+{assign var="doisMeiaZero" value="a b{$holder}c{$publication->getData('copyrightYear')}  "}
 
 {assign var="cincoZeroZero" value="aDisponível em: https://{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}. Acesso em: {$smarty.now|date_format:"%d.%m.%Y"}  "}
 
@@ -239,7 +239,7 @@
 
 
 
-{assign var="seteSeteTres" value=" t{$currentContext->getLocalizedName()} dCidade {$issue->getIssueIdentification()}, {$submissionPages|escape}, {$formattedDate} {$currentContext->getData('onlineIssn')}"}
+{assign var="seteSeteTres" value=" t{$currentContext->getLocalizedName()} d {$issue->getIssueIdentification()}, {$submissionPages|escape}, {$formattedDate} {$currentContext->getData('onlineIssn')}"}
 {assign var="rec773POS" value=$rec520CAR + $rec520POS}  {* Valor base para POS *}
 {assign var="rec773CAR" value=sprintf('%04d', max(0, strlen($seteSeteTres) + 11))}  {* Corrigir CAR com máximo 0 *}
 
@@ -388,7 +388,7 @@
     {/if}
     {assign var="formattedDate" value=$translatedMonth|cat:' '|cat:date('Y', $timestamp)}
 
-{assign var="seteSeteTres" value=" t{$currentContext->getLocalizedName()} dCidade {$issue->getIssueIdentification()}, {$submissionPages|escape}, {$formattedDate} {$currentContext->getData('onlineIssn')}"}
+{assign var="seteSeteTres" value=" t{$currentContext->getLocalizedName()} d {$issue->getIssueIdentification()}, {$submissionPages|escape}, {$formattedDate} {$currentContext->getData('onlineIssn')}"}
 
 <b>773= </b>{$seteSeteTres}<br>
 
