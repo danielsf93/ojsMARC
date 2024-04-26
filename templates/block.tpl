@@ -240,7 +240,7 @@
 
 
 {assign var="seteSeteTres" value=" t{$currentContext->getLocalizedName()} d {$issue->getIssueIdentification()}, {$submissionPages|escape}, {$formattedDate} {$currentContext->getData('onlineIssn')}"}
-{assign var="rec773POS" value=$rec520CAR + $rec520POS}  {* Valor base para POS *}
+{assign var="rec773POS" value=$rec520CAR + $rec520POS + 1}  {* Valor base para POS *}
 {assign var="rec773CAR" value=sprintf('%04d', max(0, strlen($seteSeteTres) + 11))}  {* Corrigir CAR com máximo 0 *}
 
 {if $numAutoresAdicionais > 0}
@@ -288,7 +288,7 @@
     {assign var="noveQuatroCinco" value=" aPbcxxj{$publicationYear}lNACIONAL"}
 {/if}
 {assign var="cleaned_noveQuatroCinco" value=$noveQuatroCinco|strip}
-{assign var="rec945CAR" value=sprintf('%04d', strlen($cleaned_noveQuatroCinco))}
+{assign var="rec945CAR" value=sprintf('%04d', strlen($cleaned_noveQuatroCinco)+2)}
 {assign var="rec945POS" value=$rec940CAR + $rec940POS}
 {assign var="rec945" value="945"|cat:$rec945CAR|cat:sprintf('%05d', $rec945POS)}
 
@@ -351,7 +351,7 @@ Quantidade de resumos em outros idiomas: {$otherAbstractsCount}
 {assign var="ldrValue" value=($totalAuthors * 12) + ($titleCount * 12) + ($primaryAbstractCount * 12) + ($otherAbstractsCount * 12) + 181}
 
 {* Formatar como sequência de seis dígitos com zeros à esquerda *}
-{assign var="ldr" value=sprintf('%06d', $ldrValue)}
+{assign var="ldr" value=sprintf('%05d', $ldrValue)}
 
 LIDER: {$ldr}
 
@@ -447,7 +447,7 @@ LIDER: {$ldr}
     {/if}
     {assign var="formattedDate" value=$translatedMonth|cat:' '|cat:date('Y', $timestamp)}
 
-{assign var="seteSeteTres" value=" t{$currentContext->getLocalizedName()} d {$issue->getIssueIdentification()}, {$submissionPages|escape}, {$formattedDate} {$currentContext->getData('onlineIssn')}"}
+{assign var="seteSeteTres" value="  t{$currentContext->getLocalizedName()} d {$issue->getIssueIdentification()}, {$submissionPages|escape}, {$formattedDate} {$currentContext->getData('onlineIssn')}"}
 
 <b>773= </b>{$seteSeteTres}<br>
 
@@ -545,7 +545,7 @@ a{$rec945}b
     document.addEventListener('DOMContentLoaded', function() {
         var downloadButton = document.getElementById('downloadButton');
         downloadButton.addEventListener('click', function() {
-            var text = "{$totalcaracteres}nab   200277Ia 45  {$rec005|escape:'javascript'}{$rec008|escape:'javascript'}{$rec024|escape:'javascript'}{$rec040|escape:'javascript'}{$rec041|escape:'javascript'}{$rec044|escape:'javascript'}{$rec100|escape:'javascript'}{$rec242EDT|escape:'javascript'}{$rec245|escape:'javascript'}{$rec260|escape:'javascript'}{$rec300|escape:'javascript'}{$rec500|escape:'javascript'}{$rec520|escape:'javascript'}{$rec7uuAll|escape:'javascript'}{$rec773|escape:'javascript'}{$rec856A|escape:'javascript'}{$rec940AllEDT|escape:'javascript'}{$rec945|escape:'javascript'}{$zeroZeroCinco|escape:'javascript'}{$zeroZeroOito|escape:'javascript'}{$zeroDoisQuatro|escape:'javascript'}{$zeroQuatroZero|escape:'javascript'}{$zeroQuatroUm|escape:'javascript'}{$zeroQuatroQuatro|escape:'javascript'}{$umZeroZero|escape:'javascript'}{$doisQuatroDois|escape:'javascript'}{$doisQuatroCinco|escape:'javascript'}{$doisMeiaZero|escape:'javascript'}{$tresZeroZero|escape:'javascript'}{$cincoZeroZero|escape:'javascript'}{$cincoDoisZero|escape:'javascript'}{$additionalAuthorsExport|escape:'javascript'}{$seteSeteTres|escape:'javascript'}{$oitoCincoMeiaA|escape:'javascript'}{$noveQuatroZero|escape:'javascript'}{$noveQuatroCinco|escape:'javascript'}";
+            var text = "{$totalcaracteres}nab   2{$ldr}Ia 45  {$rec005|escape:'javascript'}{$rec008|escape:'javascript'}{$rec024|escape:'javascript'}{$rec040|escape:'javascript'}{$rec041|escape:'javascript'}{$rec044|escape:'javascript'}{$rec100|escape:'javascript'}{$rec242EDT|escape:'javascript'}{$rec245|escape:'javascript'}{$rec260|escape:'javascript'}{$rec300|escape:'javascript'}{$rec500|escape:'javascript'}{$rec520|escape:'javascript'}{$rec7uuAll|escape:'javascript'}{$rec773|escape:'javascript'}{$rec856A|escape:'javascript'}{$rec940AllEDT|escape:'javascript'}{$rec945|escape:'javascript'}{$zeroZeroCinco|escape:'javascript'}{$zeroZeroOito|escape:'javascript'}{$zeroDoisQuatro|escape:'javascript'}{$zeroQuatroZero|escape:'javascript'}{$zeroQuatroUm|escape:'javascript'}{$zeroQuatroQuatro|escape:'javascript'}{$umZeroZero|escape:'javascript'}{$doisQuatroDois|escape:'javascript'}{$doisQuatroCinco|escape:'javascript'}{$doisMeiaZero|escape:'javascript'}{$tresZeroZero|escape:'javascript'}{$cincoZeroZero|escape:'javascript'}{$cincoDoisZero|escape:'javascript'}{$additionalAuthorsExport|escape:'javascript'}{$seteSeteTres|escape:'javascript'}{$oitoCincoMeiaA|escape:'javascript'}{$noveQuatroZero|escape:'javascript'}{$noveQuatroCinco|escape:'javascript'}";
             var fileName = 'ojs.mrc'; // Nome do arquivo a ser baixado
             var blob = new Blob([text], { type: 'text/plain' });
             if (window.navigator.msSaveOrOpenBlob) {
