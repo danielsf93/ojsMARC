@@ -296,17 +296,70 @@
 
  
 <hr>TESTES:<br>
+{assign var="authors" value=$publication->getData('authors')}
+{assign var="totalAuthors" value=count($authors)}
+Total de autores: {$totalAuthors}<br><br>
 
+{assign var="titleCount" value=0}
 
+{assign var="primaryTitle" value=$publication->getLocalizedTitle($primaryLocale)}
 
-
-<b>Títulos em diferentes idiomas, ignorando o idioma primário:</b><br>
 {foreach from=$currentContext->getSupportedLocales() item=locale}
     {if $locale != $primaryLocale}
-        {$publication->getLocalizedTitle($locale)}<br>
+        {assign var="localizedTitle" value=$publication->getLocalizedTitle($locale)}
+        {if $localizedTitle && $localizedTitle != $primaryTitle}
+            {assign var="titleCount" value=$titleCount + 1}
+        {/if}
     {/if}
-{/foreach}<br>
+{/foreach}
 
+Quantidade de títulos em outros idiomas: {$titleCount}<br><br>
+{assign var="abstractCount" value=0}
+
+{* Obter o idioma de submissão (primaryLocale) *}
+{assign var="primaryLocale" value=$publication->getData('locale')}
+
+{* Contar resumos no idioma de submissão (primário) *}
+{assign var="abstractPrimary" value=$publication->getLocalizedData('abstract', $primaryLocale)}
+{assign var="primaryAbstractCount" value=0}
+{if $abstractPrimary}
+    {assign var="primaryAbstractCount" value=1}
+{/if}
+
+{* Contar resumos em outros idiomas, sem somar o idioma de submissão *}
+{assign var="otherAbstractsCount" value=0}
+{assign var="localizedAbstracts" value=[]}
+
+{foreach from=$currentContext->getSupportedLocales() item=locale}
+    {assign var="localizedData" value=$publication->getLocalizedData('abstract', $locale)}
+    {if $localizedData && $locale != $primaryLocale} {* Exclui o idioma de submissão *}
+        {assign var="primaryAbstract" value=$publication->getLocalizedData('abstract', $primaryLocale)}
+        {if !$primaryAbstract || $localizedData != $primaryAbstract}
+            {append var=localizedAbstracts value=$localizedData}
+            {assign var="otherAbstractsCount" value=$otherAbstractsCount + 1} {* Incrementar a contagem de outros idiomas *}
+        {/if}
+    {/if}
+{/foreach}
+
+Quantidade de resumos no idioma de submissão: {$primaryAbstractCount}<br>
+Quantidade de resumos em outros idiomas: {$otherAbstractsCount}
+<br><br>
+
+
+
+
+{assign var="ldrValue" value=($totalAuthors * 12) + ($titleCount * 12) + ($primaryAbstractCount * 12) + ($otherAbstractsCount * 12) + 181}
+
+{* Formatar como sequência de seis dígitos com zeros à esquerda *}
+{assign var="ldr" value=sprintf('%06d', $ldrValue)}
+
+LIDER: {$ldr}
+
+
+
+
+					
+					
 
 
 
