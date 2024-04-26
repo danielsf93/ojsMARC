@@ -59,7 +59,10 @@
 
 {assign var="resumoPtbr" value=$publication->getLocalizedData('abstract', 'pt_BR')}
 
-{assign var="cincoDoisZero" value="a{$resumoPtbr}"}
+{* Remover tags <p> e </p> *}
+{assign var="resumoPtbrCleaned" value=$resumoPtbr|replace:'<p>':''|replace:'</p>':''}
+
+{assign var="cincoDoisZero" value="a{$resumoPtbrCleaned}"}
 
 
 {* Demais autores texto*}
@@ -168,9 +171,12 @@
 {assign var="rec500CAR" value=sprintf('%04d', strlen($cincoZeroZero) + 0)}
 {assign var="rec500" value="500"|cat:$rec500CAR|cat:sprintf('%05d', $rec500POS + 0)}
 
+{assign var="resumoPtbr" value=$publication->getLocalizedData('abstract', 'pt_BR')}
+{assign var="resumoPtbrCleaned" value=$resumoPtbr|replace:'<p>':''|replace:'</p>':''}
 {assign var="rec520POS" value=$rec500CAR + $rec500POS}
-{assign var="rec520CAR" value=sprintf('%04d', strlen($publication->getLocalizedData('abstract', 'pt_BR')) + 5)}
-{assign var="rec520" value="520"|cat:$rec520CAR|cat:sprintf('%05d', $rec520POS + 0)}
+{assign var="rec520CAR" value=sprintf('%04d', strlen($resumoPtbrCleaned) + 5)}
+{assign var="rec520" value="520"|cat:$rec520CAR|cat:sprintf('%05d', $rec520POS)}
+
 
 {assign var="numAutoresAdicionais" value=count($additionalAuthors)}
 {assign var="rec700All" value=''} 
