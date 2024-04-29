@@ -296,7 +296,7 @@
 {assign var="cleaned_noveQuatroCinco" value=$noveQuatroCinco|strip}
 {assign var="rec945CAR" value=sprintf('%04d', strlen($cleaned_noveQuatroCinco)+2)}
 {assign var="rec945POS" value=$rec940CAR + $rec940POS}
-{assign var="rec945" value="945"|cat:$rec945CAR|cat:sprintf('%05d', $rec945POS)}
+{assign var="rec945" value="945"|cat:$rec945CAR|cat:sprintf('%05d', $rec940POS)}
 
 
 
@@ -534,6 +534,15 @@ a{$rec940All}b
 a{$rec945}b
 
 <hr>
+TESTESSSS:<br>
+{$rec940POS}
+
+
+
+
+
+<hr>
+
 
 {** BOTÃO*}
     <button id="downloadButton" class="botao">Baixar Registro MARC</button>
