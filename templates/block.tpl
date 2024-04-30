@@ -60,7 +60,9 @@
 {assign var="resumoPtbr" value=$publication->getLocalizedData('abstract', 'pt_BR')}
 
 {* Remover tags <p> e </p> *}
-{assign var="resumoPtbrCleaned" value=$resumoPtbr|replace:'<p>':''|replace:'</p>':''}
+{assign var="resumoPtbrCleaned" value=$resumoPtbr|replace:'
+':' '|replace:'<br>':'    '|replace:'<br />':'      '|replace:'<br/>':'     '|replace:'<p>':''|replace:'</p>':''|replace:'<strong>':'        '|replace:'</strong>':'         '|replace:'<sup>':'     '|replace:'</sup>':'      '|replace:'<em>':'    '|replace:'</em>':'     '}
+
 
 {assign var="cincoDoisZero" value="a{$resumoPtbrCleaned}"}
 
