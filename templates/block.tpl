@@ -487,7 +487,9 @@ LIDER: {$ldr}
 
 {assign var="noveQuatroZero" value=""}
 {foreach from=$localizedAbstracts item=abstract}
-    {assign var="noveQuatroZero" value=$noveQuatroZero|cat:" a"|cat:$abstract|cat:" "}
+{assign var="abstractEdt" value=$abstract|replace:'
+':' '|replace:'<br>':'    '|replace:'<br />':'      '|replace:'<br/>':'     '|replace:'<p>':'   '|replace:'</p>':'    '|replace:'<strong>':'        '|replace:'</strong>':'         '|replace:'<sup>':'     '|replace:'</sup>':'      '|replace:'<em>':'    '|replace:'</em>':'     '}
+    {assign var="noveQuatroZero" value=$noveQuatroZero|cat:" a"|cat:$abstractEdt|cat:" "}
 {/foreach}
 
 
