@@ -247,9 +247,9 @@
 
 
 
-{assign var="seteSeteTres" value=" t{$currentContext->getLocalizedName()} d {$issue->getIssueIdentification()}, {$submissionPages|escape}, {$formattedDate} {$currentContext->getData('onlineIssn')}"}
-{assign var="rec773POS" value=$rec520CAR + $rec520POS + 1}  {* Valor base para POS *}
-{assign var="rec773CAR" value=sprintf('%04d', max(0, strlen($seteSeteTres) + 11))}  {* Corrigir CAR com máximo 0 *}
+{assign var="seteSeteTres" value="0 d   v {$issue->getIssueIdentification()}, {$submissionPages|escape}, {$formattedDate} t {$currentContext->getLocalizedName()}"}
+{assign var="rec773POS" value=$rec520CAR + $rec520POS + 2}  {* Valor base para POS *}
+{assign var="rec773CAR" value=sprintf('%04d', max(0, strlen($seteSeteTres) + 9))}  {* Corrigir CAR com máximo 0 *}
 
 {if $numAutoresAdicionais > 0}
     {assign var="rec773POS" value=$rec773POS + $rec773CAR}  {* Somar valor correto ao POS *}
@@ -455,7 +455,7 @@ LIDER: {$ldr}
     {/if}
     {assign var="formattedDate" value=$translatedMonth|cat:' '|cat:date('Y', $timestamp)}
 
-{assign var="seteSeteTres" value="  t{$currentContext->getLocalizedName()} d {$issue->getIssueIdentification()}, {$submissionPages|escape}, {$formattedDate} {$currentContext->getData('onlineIssn')}"}
+{assign var="seteSeteTres" value="0 d   v {$issue->getIssueIdentification()}, {$submissionPages|escape}, {$formattedDate} t {$currentContext->getLocalizedName()}"}
 
 <b>773= </b>{$seteSeteTres}<br>
 
@@ -505,7 +505,7 @@ LIDER: {$ldr}
 {elseif $sectionTitle == 'editorial'}
     {assign var="noveQuatroCinco" value=" aPbARTIGO DE PERIODICO-CARTA/EDITORIALc33j{$publicationYear}lNACIONAL"}
 {else}
-    {assign var="noveQuatroCinco" value=" aPbcxxj{$publicationYear}lNACIONAL"}
+    {assign var="noveQuatroCinco" value=" aPbc j{$publicationYear}lNACIONAL"}
 {/if}
 
 {$noveQuatroCinco}<br>
