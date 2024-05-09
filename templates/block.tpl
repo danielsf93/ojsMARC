@@ -216,38 +216,41 @@
 {assign var="firstAuthor" value=true}
 
 {foreach $publication->getData('authors') as $additionalAuthor}
-    {if !$firstAuthor}
+    {if !$firstAuthor}  {* Ignora o primeiro autor *}
         {assign var="surname" value=$additionalAuthor->getLocalizedFamilyName()|escape}
         {assign var="givenName" value=$additionalAuthor->getLocalizedGivenName()|escape}
         {assign var="orcid" value=$additionalAuthor->getOrcid()|default:''}
-
-        {if $orcid}
-            {assign var="seteZeroZero" value="1 a{$surname}, {$givenName}0{$orcid}4org"}
-        {else}
-            {assign var="seteZeroZero" value="1 a{$surname}, {$givenName}0 4org"}
-        {/if}
-
-        {assign var="rec7uuCAR" value=str_replace(['-', ' '], '', sprintf('%04d', strlen($seteZeroZero)))}
-        {assign var="rec7uuPOS" value=sprintf('%05d', $rec520CAR + $rec520POS-0)}
-        {assign var="rec7uu" value="700{$rec7uuCAR}{$rec7uuPOS}"}
-
-        {assign var="additionalAuthorsExporter" value="$additionalAuthorsExporter{$rec7uu}"}
-
-       
+        {assign var="affiliation" value=$additionalAuthor->getLocalizedAffiliation()|default:''}
+        {assign var="locale" value=$additionalAuthor->getCountryLocalized()|escape}
         
+        {* Nova condição baseada em afiliação *}
+        {if $affiliation|strstr:'Universidade de São Paulo'}
+            {assign var="seteZeroZero" value="1 a{$surname}, {$givenName}0{$orcid}5(*)7NAC"}  {* Nacional *}
+        {else}
+            {assign var="seteZeroZero" value="1 a{$surname}, {$givenName}0{$orcid}5(*)7INT8{$affiliation}9{$locale}"}  {* Internacional *}
+        {/if}
+        
+        {assign var="rec7uuCAR" value=str_replace(['-', ' '], '', sprintf('%04d', strlen($seteZeroZero)))}
+        {assign var="rec7uuPOS" value=sprintf('%05d', $rec520CAR + $rec520POS)}
+        {assign var="rec7uu" value="700{$rec7uuCAR}{$rec7uuPOS}"}
+        
+        {* Atualiza rec520POS para o próximo valor *}
         {assign var="rec520POS" value=$rec7uuPOS}
-        {assign var="rec520CAR" value=str_replace(['-', ' '], '', sprintf('%04d', strlen($seteZeroZero) + 0))}
+        {assign var="rec520CAR" value=$rec7uuCAR}
+        
+        {* Atualiza a variável rec7uuAll *}
         {assign var="rec7uuAll" value=$rec7uuAll|cat:$rec7uu} 
     {else}
-        {assign var="firstAuthor" value=false}
+        {assign var="firstAuthor" value=false} 
     {/if}
 {/foreach}
 
-{assign var="rec7uuAll" value=str_replace(" ", "", $rec7uuAll)}
+{assign var="rec7uuAll" value=str_replace(" ", "", $rec7uuAll)} 
 
 
 
-{assign var="seteSeteTres" value="0 d   v {$issue->getIssueIdentification()}, {$submissionPages|escape}, {$formattedDate} t {$currentContext->getLocalizedName()}"}
+
+{assign var="seteSeteTres" value="0 d   h {$issue->getIssueIdentification()}, {$submissionPages|escape}, {$formattedDate} t {$currentContext->getLocalizedName()}"}
 {assign var="rec773POS" value=$rec520CAR + $rec520POS + 2}  {* Valor base para POS *}
 {assign var="rec773CAR" value=sprintf('%04d', max(0, strlen($seteSeteTres) + 9))}  {* Corrigir CAR com máximo 0 *}
 
@@ -426,12 +429,16 @@ LIDER: {$ldr}
         {assign var="surname" value=$author->getLocalizedFamilyName()|escape}
         {assign var="givenName" value=$author->getLocalizedGivenName()|escape}
         {assign var="orcid" value=$author->getOrcid()|default:''}
-        {if $orcid}
-            {assign var="seteZeroZero" value="1 a{$surname}, {$givenName}0{$orcid}4org"}
+        {assign var="affiliation" value=$author->getLocalizedAffiliation()|default:''}
+        {assign var="locale" value=$author->getCountryLocalized()|escape}
+        
+        {if $affiliation|strstr:'Universidade de São Paulo'}
+            {assign var="seteZeroZero" value="1 a{$surname}, {$givenName}0{$orcid}5(*)7NAC"}
         {else}
-            {assign var="seteZeroZero" value="1 a{$surname}, {$givenName}0 4org"}
+            {assign var="seteZeroZero" value="1 a{$surname}, {$givenName}0{$orcid}5(*)7INT8{$affiliation}9{$locale}"}
         {/if}
-        {assign var="additionalAuthorsExport" value="$additionalAuthorsExport{$seteZeroZero}"}
+        
+        {assign var="additionalAuthorsExport" value="$additionalAuthorsExport{$seteZeroZero}"}	
 		<b>700= </b>{$seteZeroZero}<br>
     {/if}
 {/foreach}
@@ -455,7 +462,7 @@ LIDER: {$ldr}
     {/if}
     {assign var="formattedDate" value=$translatedMonth|cat:' '|cat:date('Y', $timestamp)}
 
-{assign var="seteSeteTres" value="0 d   v {$issue->getIssueIdentification()}, {$submissionPages|escape}, {$formattedDate} t {$currentContext->getLocalizedName()}"}
+{assign var="seteSeteTres" value="0 d   h {$issue->getIssueIdentification()}, {$submissionPages|escape}, {$formattedDate} t {$currentContext->getLocalizedName()}"}
 
 <b>773= </b>{$seteSeteTres}<br>
 
@@ -530,7 +537,7 @@ a{$rec260}b
 a{$rec300}b
 a{$rec500}b
 a{$rec520}b
-a{$rec7uuAll}b
+<h2>{$rec7uuAll}</h2>
 a{$rec773}b
 a{$rec856A}b
 a{$rec940All}b
