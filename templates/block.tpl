@@ -3,21 +3,14 @@
 {if isset($publication)}
 
 	<div class="marc">         
-<hr>
+
 {* Organizando a Informação *}
-
 {assign var="dataFormatada" value=$smarty.now|date_format:"%Y%m%d%H%M%S.0"}
-
 {assign var="zeroZeroCinco" value="$dataFormatada"}
-
 {assign var="zeroZeroOito" value="230224s2020    bl            000 0 por d7 "}
-        
 {assign var="zeroDoisQuatro" value="a{$publication->getStoredPubId('doi')|escape}2DOI"}
-
 {assign var="zeroQuatroZero" value="  aUSP/ABCD0 "}
-
 {assign var="zeroQuatroUm" value="apor  "}
-
 {assign var="zeroQuatroQuatro" value="abl1 "}
 
 {* Obter Primeiro Autor *}
@@ -49,23 +42,17 @@
 {/foreach}
 
 {assign var="doisQuatroCinco" value="10a{$publication->getLocalizedFullTitle()|escape}h[recurso eletrônico]  "}
-
 {assign var=submissionPages value=$publication->getData('pages')}
 {assign var="tresZeroZero" value="ap. {$submissionPages}  "}
-
 {assign var="doisMeiaZero" value="a b{$holder}c{$publication->getData('copyrightYear')}  "}
-
 {assign var="cincoZeroZero" value="aDisponível em: https://{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}. Acesso em: {$smarty.now|date_format:"%d.%m.%Y"}  "}
-
 {assign var="resumoPtbr" value=$publication->getLocalizedData('abstract', 'pt_BR')}
 
 {* Remover tags <p> e </p> *}
 {assign var="resumoPtbrCleaned" value=$resumoPtbr|replace:'
 ':' '|replace:'<br>':'    '|replace:'<br />':'      '|replace:'<br/>':'     '|replace:'<p>':''|replace:'</p>':''|replace:'<strong>':'        '|replace:'</strong>':'         '|replace:'<sup>':'     '|replace:'</sup>':'      '|replace:'<em>':'    '|replace:'</em>':'     '}
 
-
 {assign var="cincoDoisZero" value="a{$resumoPtbrCleaned}"}
-
 
 {* Demais autores texto*}
 {assign var="additionalAuthors" value=[]}
@@ -90,9 +77,7 @@
 {/foreach}
    
 {assign var="oitoCincoMeiaA" value="4 zClicar sobre o botão para acesso ao texto completouhttps://doi.org/{$publication->getStoredPubId('doi')|escape}3DOI "}
-
 {assign var="ldr" value="01086nab   200277Ia 45"} 
-
 
 {** CALCULO DO NUMERAL*}
 {* Calculando o comprimento da variável $rec005 *}
@@ -179,37 +164,27 @@
 {assign var="rec520CAR" value=sprintf('%04d', strlen($resumoPtbrCleaned) + 5)}
 {assign var="rec520" value="520"|cat:$rec520CAR|cat:sprintf('%05d', $rec520POS)}
 
-
 {assign var="numAutoresAdicionais" value=count($additionalAuthors)}
 {assign var="rec700All" value=''} 
 
 {foreach $additionalAuthors as $additionalAuthor}
     {assign var="rec700" value=''} 
-    
     {assign var="rec700POS" value=sprintf('%05d', $rec500CAR + $rec500POS)}
-    
     {assign var="seteZeroZero" value="1 a{$additionalAuthor->getLocalizedFamilyName()|escape}, {$additionalAuthor->getLocalizedGivenName()|escape}"}
-
     {if $additionalAuthor->getOrcid()}
         {assign var="seteZeroZero" value="$seteZeroZero0{$additionalAuthor->getOrcid()}"} 
     {else}
         {assign var="seteZeroZero" value="$seteZeroZero0 "} 
     {/if}
-
     {assign var="seteZeroZero" value="$seteZeroZero4org"}
-
     {assign var="rec700CAR" value=sprintf('%04d', strlen($seteZeroZero))}
-
-    {assign var="rec700" value=$rec700|cat:"700"|cat:$rec700CAR|cat:$rec700POS - 3|cat:$seteZeroZero|cat:"  "}
-    
+    {assign var="rec700" value=$rec700|cat:"700"|cat:$rec700CAR|cat:$rec700POS - 3|cat:$seteZeroZero|cat:"  "} 
     {assign var="rec500POS" value=$rec700POS}
     {assign var="rec500CAR" value=$rec700CAR}
-    
     {assign var="rec700All" value=$rec700All|cat:$rec700} 
 {/foreach}
 
 {assign var="rec700All" value=str_replace(" ", "", $rec700All)}
-
 
 {assign var="additionalAuthorsExporter" value=""}
 {assign var="rec7uuAll" value=''}
@@ -222,21 +197,15 @@
         {assign var="orcid" value=$additionalAuthor->getOrcid()|default:''}
         {assign var="affiliation" value=$additionalAuthor->getLocalizedAffiliation()|default:''}
         {assign var="locale" value=$additionalAuthor->getCountryLocalized()|escape}
-
         {if $affiliation|strstr:'Universidade de São Paulo'}
             {assign var="seteZeroZero" value="1 a{$surname}, {$givenName}0{$orcid}5(*)7NAC"}  {* Nacional *}
         {else}
             {assign var="seteZeroZero" value="1 a{$surname}, {$givenName}0{$orcid}5(*)7INT8{$affiliation}9{$locale}"}  {* Internacional *}
         {/if}
-
         {assign var="rec7uuCAR" value=str_replace(['-', ' '], '', sprintf('%04d', strlen($seteZeroZero)))}
         {assign var="rec7uuPOS" value=sprintf('%05d', $rec520CAR + $rec520POS-0)}
         {assign var="rec7uu" value="700{$rec7uuCAR}{$rec7uuPOS}"}
-
-        {assign var="additionalAuthorsExporter" value="$additionalAuthorsExporter{$rec7uu}"}
-
-       
-        
+        {assign var="additionalAuthorsExporter" value="$additionalAuthorsExporter{$rec7uu}"}   
         {assign var="rec520POS" value=$rec7uuPOS}
         {assign var="rec520CAR" value=str_replace(['-', ' '], '', sprintf('%04d', strlen($seteZeroZero) + 0))}
         {assign var="rec7uuAll" value=$rec7uuAll|cat:$rec7uu} 
@@ -246,8 +215,6 @@
 {/foreach}
 
 {assign var="rec7uuAll" value=str_replace(" ", "", $rec7uuAll)}
-
-
 
 {assign var="seteSeteTres" value="0 d   h {$issue->getIssueIdentification()}, {$submissionPages|escape}, {$formattedDate} t {$currentContext->getLocalizedName()}"}
 {assign var="rec773POS" value=$rec520CAR + $rec520POS + 2}  {* Valor base para POS *}
@@ -259,12 +226,9 @@
 
 {assign var="rec773" value="773"|cat:$rec773CAR|cat:sprintf('%05d', max(0, $rec773POS - 2))}  {* Formatar CAR e POS corretamente *}
 
-
-
 {assign var="rec856POS" value=$rec773CAR + $rec773POS}
 {assign var="rec856CAR" value=sprintf('%04d', strlen($oitoCincoMeiaA) + 1)}
 {assign var="rec856A" value="856"|cat:$rec856CAR|cat:sprintf('%05d', $rec856POS - 2)}
-
 
 {assign var="rec940All" value=''}  
 {assign var="rec940POS" value=$rec856CAR + $rec856POS - 5}
@@ -302,13 +266,8 @@
 {assign var="rec945POS" value=$rec940CAR + $rec940POS}
 {assign var="rec945" value="945"|cat:$rec945CAR|cat:sprintf('%05d', $rec940POS)}
 
-
-
- 
-<hr>TESTES:<br>
 {assign var="authors" value=$publication->getData('authors')}
 {assign var="totalAuthors" value=count($authors)}
-Total de autores: {$totalAuthors}<br><br>
 
 {assign var="titleCount" value=0}
 
@@ -323,12 +282,10 @@ Total de autores: {$totalAuthors}<br><br>
     {/if}
 {/foreach}
 
-Quantidade de títulos em outros idiomas: {$titleCount}<br><br>
 {assign var="abstractCount" value=0}
 
 {* Obter o idioma de submissão (primaryLocale) *}
 {assign var="primaryLocale" value=$publication->getData('locale')}
-
 {* Contar resumos no idioma de submissão (primário) *}
 {assign var="abstractPrimary" value=$publication->getLocalizedData('abstract', $primaryLocale)}
 {assign var="primaryAbstractCount" value=0}
@@ -351,41 +308,10 @@ Quantidade de títulos em outros idiomas: {$titleCount}<br><br>
     {/if}
 {/foreach}
 
-Quantidade de resumos no idioma de submissão: {$primaryAbstractCount}<br>
-Quantidade de resumos em outros idiomas: {$otherAbstractsCount}
-<br><br>
-
-
-
-
 {assign var="ldrValue" value=($totalAuthors * 12) + ($titleCount * 12) + ($primaryAbstractCount * 12) + ($otherAbstractsCount * 12) + 181}
 
 {* Formatar como sequência de seis dígitos com zeros à esquerda *}
 {assign var="ldr" value=sprintf('%05d', $ldrValue)}
-
-LIDER: {$ldr}
-
-
-
-
-					
-					
-
-
-
-
-
-
-<hr>TEXTO:<br>
-<b>LDR= </b>{$ldr}<br>
-<b>005= </b>{$zeroZeroCinco}<br>
-<b>008= </b>{$zeroZeroOito}<br>
-<b>024= </b>{$zeroDoisQuatro}<br>
-<b>040= </b>{$zeroQuatroZero}<br>
-<b>041= </b>{$zeroQuatroUm}<br>
-<b>044= </b>{$zeroQuatroQuatro}<br>
-<b>100= </b>{$umZeroZero}<br>
-
 
 {assign var="localizedTitles" value=[]}
 {foreach from=$currentContext->getSupportedLocales() item=locale}
@@ -394,7 +320,7 @@ LIDER: {$ldr}
         {assign var="primaryTitle" value=$publication->getLocalizedTitle($primaryLocale)}
         {if !$primaryTitle || $localizedTitle != $primaryTitle}
             {$localizedTitles[] = $localizedTitle}
-         <b>242= </b>   00a{$localizedTitle}<br>
+       
         {/if}
     {/if}
 {/foreach}
@@ -411,17 +337,8 @@ LIDER: {$ldr}
     {/if}
 {/foreach}
 
-
-
-
-
-<b>245= </b>{$doisQuatroCinco}<br>
-<b>260= </b>{$doisMeiaZero}<br>
 {assign var=submissionPages value=$publication->getData('pages')}
 
-<b>300= </b>{$submissionPages|escape}<br>
-<b>500= </b>{$cincoZeroZero}<br>
-<b>520= </b>{$publication->getLocalizedData('abstract', 'pt_BR')}   <br>
 {assign var="additionalAuthorsExport" value=""}
 {foreach from=$publication->getData('authors') item=author name=authorLoop}
     {if $smarty.foreach.authorLoop.index > 0}
@@ -429,16 +346,14 @@ LIDER: {$ldr}
         {assign var="givenName" value=$author->getLocalizedGivenName()|escape}
         {assign var="orcid" value=$author->getOrcid()|default:''}
         {assign var="affiliation" value=$author->getLocalizedAffiliation()|default:''}
-        {assign var="locale" value=$author->getCountryLocalized()|escape}
-        
+        {assign var="locale" value=$author->getCountryLocalized()|escape}        
         {if $affiliation|strstr:'Universidade de São Paulo'}
             {assign var="seteZeroZero" value="1 a{$surname}, {$givenName}0{$orcid}5(*)7NAC"}
         {else}
             {assign var="seteZeroZero" value="1 a{$surname}, {$givenName}0{$orcid}5(*)7INT8{$affiliation}9{$locale}"}
-        {/if}
-        
+        {/if}       
         {assign var="additionalAuthorsExport" value="$additionalAuthorsExport{$seteZeroZero}"}	
-		<b>700= </b>{$seteZeroZero}<br>
+		
     {/if}
 {/foreach}
 {**Formatacao data para campo 773 *}
@@ -463,22 +378,17 @@ LIDER: {$ldr}
 
 {assign var="seteSeteTres" value="0 d   h {$issue->getIssueIdentification()}, {$submissionPages|escape}, {$formattedDate} t {$currentContext->getLocalizedName()}"}
 
-<b>773= </b>{$seteSeteTres}<br>
-
-<b>856a= </b>{$oitoCincoMeiaA}<br>
-
 {assign var="localizedAbstracts" value=[]}
 {foreach from=$currentContext->getSupportedLocales() item=locale}
     {assign var="localizedData" value=$publication->getLocalizedData('abstract', $locale)}
     {if $localizedData && $locale != $primaryLocale}
         {assign var="primaryAbstract" value=$publication->getLocalizedData('abstract', $primaryLocale)}
         {if !$primaryAbstract || $localizedData != $primaryAbstract}
-            <b>940= </b>a{$localizedData}  <br>
+
             {assign var="localizedAbstracts" value=$localizedData}
         {/if}
     {/if}
 {/foreach}
-
 
 {assign var="localizedAbstracts" value=[]}
 {foreach from=$currentContext->getSupportedLocales() item=locale}
@@ -498,10 +408,7 @@ LIDER: {$ldr}
     {assign var="noveQuatroZero" value=$noveQuatroZero|cat:" a"|cat:$abstractEdt|cat:" "}
 {/foreach}
 
-
-
-
-<b>945= </b>{assign var="publicationDate" value=$publication->getData('datePublished')}
+{assign var="publicationDate" value=$publication->getData('datePublished')}
 {assign var="publicationYear" value=date('Y', strtotime($publicationDate))}
 {assign var="sectionTitle" value=$section->getLocalizedTitle()|lower|strip}
 {if $sectionTitle == 'artigo' or $sectionTitle == 'artigos'}
@@ -514,45 +421,9 @@ LIDER: {$ldr}
     {assign var="noveQuatroCinco" value=" aPbc j{$publicationYear}lNACIONAL"}
 {/if}
 
-{$noveQuatroCinco}<br>
-<hr>
-
-
-
-
-
-<hr>NUMERAL:<br>
-a{$rec005}b
-a{$rec008}b
-a{$rec024}b
-a{$rec040}b
-a{$rec041}b
-a{$rec044}b
-a{$rec100}b
-a{$rec242|replace:' ':''}b
 {assign var="rec242EDT" value="{$rec242|replace:' ':''}"}
-a{$rec245}b
-a{$rec260}b
-a{$rec300}b
-a{$rec500}b
-a{$rec520}b
-a{$rec7uuAll}b
-a{$rec773}b
-a{$rec856A}b
-a{$rec940All}b
+
 {assign var="rec940AllEDT" value="{$rec940All|replace:' ':''}"}
-a{$rec945}b
-
-<hr>
-TESTESSSS:<br>
-{$rec940POS}
-
-
-
-
-
-<hr>
-
 
 {** BOTÃO*}
     <button id="downloadButton" class="botao">Baixar Registro MARC</button>
