@@ -3,7 +3,6 @@
 {if isset($publication)}
 
 	<div class="marc">         
-
 {* Organizando a Informação *}
 {assign var="dataFormatada" value=$smarty.now|date_format:"%Y%m%d%H%M%S.0"}
 {assign var="zeroZeroCinco" value="$dataFormatada"}
@@ -428,10 +427,23 @@
 {** BOTÃO*}
     <button id="downloadButton" class="botao">Baixar Registro MARC</button>
 <style>
-    #downloadButton { font-weight: bold; padding: 10px 10px; background-color: #076fb1; color: #ffffff; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease; }
+ 
+    #downloadButton {
+    font-weight: bold;
+    padding: 5px 10px; /* Espaçamento interno */
+    background-color: #076fb1; /* Cor de fundo */
+    color: #ffffff; /* Cor do texto */
+    border: none; /* Remover borda */
+    border-radius: 5px; /* Bordas arredondadas */
+    cursor: pointer; /* Cursor ao passar por cima */
+    transition: background-color 0.3s ease; /* Transição suave da cor de fundo */
+}
+
 #downloadButton:hover {
-    background-color: #055a85; 
-}   
+    background-color: #055a85; /* Mudar a cor de fundo ao passar o mouse */
+}
+
+   
 </style>
 {$authors=$publication->getData('authors')}
 {$totalAuthors = $authors|@count}
