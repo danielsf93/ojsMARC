@@ -1,8 +1,7 @@
 {*/plugins/blocks/ojsMARC/templates/block.tpl*}
 
 {if isset($publication)}
-
-	<div class="marc">         
+      
 {* Organizando a Informação *}
 {assign var="dataFormatada" value=$smarty.now|date_format:"%Y%m%d%H%M%S.0"}
 {assign var="zeroZeroCinco" value="$dataFormatada"}
@@ -440,7 +439,7 @@
 }
 
 #downloadButton:hover {
-    background-color: #055a85; /* Mudar a cor de fundo ao passar o mouse */
+    background-color: #f60707; /* Mudar a cor de fundo ao passar o mouse */
 }
 
    
@@ -469,5 +468,5 @@
         });
     });
 </script>
-</div>
+
 {/if}
