@@ -428,7 +428,7 @@
 {** BOTÃO*}
     <button id="downloadButton" class="botao">Baixar Registro MARC</button>
 <style>
-    #downloadButton { font-weight: bold; padding: 10px 20px; background-color: #076fb1; color: #ffffff; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease; }
+    #downloadButton { font-weight: bold; padding: 10px 10px; background-color: #076fb1; color: #ffffff; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease; }
 #downloadButton:hover {
     background-color: #055a85; 
 }   
