@@ -220,13 +220,11 @@
         {assign var="surname" value=$additionalAuthor->getLocalizedFamilyName()|escape}
         {assign var="givenName" value=$additionalAuthor->getLocalizedGivenName()|escape}
         {assign var="orcid" value=$additionalAuthor->getOrcid()|default:''}
-        {assign var="affiliation" value=$additionalAuthor->getLocalizedAffiliation()|default:''}
-        {assign var="locale" value=$additionalAuthor->getCountryLocalized()|escape}
 
-        {if $affiliation|strstr:'Universidade de São Paulo'}
-            {assign var="seteZeroZero" value="1 a{$surname}, {$givenName}0{$orcid}5(*)7NAC"}  {* Nacional *}
+        {if $orcid}
+            {assign var="seteZeroZero" value="1 a{$surname}, {$givenName}0{$orcid}4org"}
         {else}
-            {assign var="seteZeroZero" value="1 a{$surname}, {$givenName}0{$orcid}5(*)7INT8{$affiliation}9{$locale}"}  {* Internacional *}
+            {assign var="seteZeroZero" value="1 a{$surname}, {$givenName}0 4org"}
         {/if}
 
         {assign var="rec7uuCAR" value=str_replace(['-', ' '], '', sprintf('%04d', strlen($seteZeroZero)))}
