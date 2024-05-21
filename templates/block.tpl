@@ -74,7 +74,7 @@
     {/if}
 {/foreach}
    
-{assign var="oitoCincoMeiaA" value="4 zClicar sobre o botão para acesso ao texto completouhttps://doi.org/{$publication->getStoredPubId('doi')|escape}3DOI "}
+{assign var="oitoCincoMeiaA" value="4 z\"Clicar\" sobre o botão para acesso ao texto completouhttps://doi.org/{$publication->getStoredPubId('doi')|escape}3DOI "}
 {assign var="ldr" value="01086nab   200277Ia 45"} 
 
 {** CALCULO DO NUMERAL*}
