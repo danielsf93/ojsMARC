@@ -425,25 +425,28 @@
 
 {** BOTÃO*}
     <button id="downloadButton" class="botao">Baixar Registro MARC</button>
-<style>
- 
-    #downloadButton {
-    font-weight: bold;
-    padding: 5px 10px; /* Espaçamento interno */
-    background-color: #076fb1; /* Cor de fundo */
-    color: #ffffff; /* Cor do texto */
-    border: none; /* Remover borda */
-    border-radius: 5px; /* Bordas arredondadas */
-    cursor: pointer; /* Cursor ao passar por cima */
-    transition: background-color 0.3s ease; /* Transição suave da cor de fundo */
-}
-
-#downloadButton:hover {
-    background-color: #f60707; /* Mudar a cor de fundo ao passar o mouse */
-}
-
-   
-</style>
+    <style>
+     
+        #downloadButton {
+            display: block;
+        margin-left: 20px;
+        margin-right: 20px;
+        font-weight: bold;
+        padding: 5px 10px; /* Espaçamento interno */
+        background-color:gray; /* Cor de fundo */
+        color: #ffffff; /* Cor do texto */
+        border: none; /* Remover borda */
+        border-radius: 5px; /* Bordas arredondadas */
+        cursor: pointer; /* Cursor ao passar por cima */
+        transition: background-color 0.3s ease; /* Transição suave da cor de fundo */
+    }
+    
+    #downloadButton:hover {
+        background-color: rgb(240, 181, 71); /* Mudar a cor de fundo ao passar o mouse */
+    }
+    
+       
+    </style>
 {$authors=$publication->getData('authors')}
 {$totalAuthors = $authors|@count}
 {assign var="totalautores" value=22000193+($totalAuthors*12)}
