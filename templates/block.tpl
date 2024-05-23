@@ -46,11 +46,17 @@
 {assign var="cincoZeroZero" value="aDisponível em: https://{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}. Acesso em: {$smarty.now|date_format:"%d.%m.%Y"}  "}
 {assign var="resumoPtbr" value=$publication->getLocalizedData('abstract', 'pt_BR')}
 
+{* Verificar se $resumoPtbr está vazio e definir "sem resumo" se for o caso *}
+{if !$resumoPtbr}
+    {assign var="resumoPtbr" value="<p> </p>"}
+{/if}
+
 {* Remover tags <p> e </p> *}
-{assign var="resumoPtbrCleaned" value=$resumoPtbr|replace:'
-':' '|replace:'<br>':'    '|replace:'<br />':'      '|replace:'<br/>':'     '|replace:'<p>':''|replace:'</p>':''|replace:'<strong>':'        '|replace:'</strong>':'         '|replace:'<sup>':'     '|replace:'</sup>':'      '|replace:'<em>':'    '|replace:'</em>':'     '}
+{assign var="resumoPtbrCleaned" value=$resumoPtbr|replace:'<p>':''|replace:'</p>':''|replace:'<strong>':''|replace:'</strong>':''|replace:'<sup>':''|replace:'</sup>':''|replace:'<em>':''|replace:'</em>':''|replace:'
+':' '|replace:'<br>':' '|replace:'<br />':' '|replace:'<br/>':' '}
 
 {assign var="cincoDoisZero" value="a{$resumoPtbrCleaned}"}
+
 
 {* Demais autores texto*}
 {assign var="additionalAuthors" value=[]}
@@ -157,10 +163,18 @@
 {assign var="rec500" value="500"|cat:$rec500CAR|cat:sprintf('%05d', $rec500POS + 0)}
 
 {assign var="resumoPtbr" value=$publication->getLocalizedData('abstract', 'pt_BR')}
+
+{* Verificar se $resumoPtbr está vazio e definir "sem resumo" se for o caso *}
+{if !$resumoPtbr}
+    {assign var="resumoPtbr" value="<p> </p>"}
+{/if}
+
 {assign var="resumoPtbrCleaned" value=$resumoPtbr|replace:'<p>':''|replace:'</p>':''}
+
 {assign var="rec520POS" value=$rec500CAR + $rec500POS}
 {assign var="rec520CAR" value=sprintf('%04d', strlen($resumoPtbrCleaned) + 5)}
 {assign var="rec520" value="520"|cat:$rec520CAR|cat:sprintf('%05d', $rec520POS)}
+
 
 {assign var="numAutoresAdicionais" value=count($additionalAuthors)}
 {assign var="rec700All" value=''} 
@@ -306,7 +320,10 @@
     {/if}
 {/foreach}
 
-{assign var="ldrValue" value=($totalAuthors * 12) + ($titleCount * 12) + ($primaryAbstractCount * 12) + ($otherAbstractsCount * 12) + 181}
+{assign var="adjustedPrimaryAbstractCount" value=($primaryAbstractCount == 0) ? 1 : $primaryAbstractCount}
+
+{assign var="ldrValue" value=($totalAuthors * 12) + ($titleCount * 12) + ($adjustedPrimaryAbstractCount * 12) + ($otherAbstractsCount * 12) + 181}
+
 
 {* Formatar como sequência de seis dígitos com zeros à esquerda *}
 {assign var="ldr" value=sprintf('%05d', $ldrValue)}
