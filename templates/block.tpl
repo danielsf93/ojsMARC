@@ -39,8 +39,8 @@
     {/if}
 {/foreach}
 
-{assign var="doisQuatroCinco" value="10a{$publication->getLocalizedFullTitle()|escape}h[recurso eletrônico]  "}
-{assign var=submissionPages value=$publication->getData('pages')}
+{assign var="doisQuatroCinco" value="10a{$publication->getLocalizedFullTitle('pt_BR')|escape}h[recurso eletrônico]  "}
+{assign var="submissionPages" value=$publication->getData('pages')}
 {assign var="tresZeroZero" value="ap. {$submissionPages}  "}
 {assign var="doisMeiaZero" value="a b{$holder}c{$publication->getData('copyrightYear')}  "}
 {assign var="cincoZeroZero" value="aDisponível em: https://{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}. Acesso em: {$smarty.now|date_format:"%d.%m.%Y"}  "}
@@ -331,26 +331,28 @@
 {assign var="localizedTitles" value=[]}
 {foreach from=$currentContext->getSupportedLocales() item=locale}
     {assign var="localizedTitle" value=$publication->getLocalizedTitle($locale)}
-    {if $localizedTitle && $locale != $primaryLocale}
-        {assign var="primaryTitle" value=$publication->getLocalizedTitle($primaryLocale)}
+    {if $localizedTitle && $locale != 'pt_BR'}
+        {assign var="primaryTitle" value=$publication->getLocalizedTitle('pt_BR')}
         {if !$primaryTitle || $localizedTitle != $primaryTitle}
             {$localizedTitles[] = $localizedTitle}
-       
+            
         {/if}
     {/if}
 {/foreach}
 
-{assign var="doisQuatroDois" value=''} 
+{assign var="doisQuatroDois" value=''}
+{assign var="primaryLocale" value='pt_BR'}  {* Definindo a localidade principal como 'pt_BR' *}
+
 {foreach from=$currentContext->getSupportedLocales() item=locale}
     {assign var="localizedTitle" value=$publication->getLocalizedTitle($locale)}
     {if $localizedTitle && $locale != $primaryLocale}
         {assign var="primaryTitle" value=$publication->getLocalizedTitle($primaryLocale)}
         {if !$primaryTitle || $localizedTitle != $primaryTitle}
-            {$localizedTitles[] = $localizedTitle}
             {assign var="doisQuatroDois" value=$doisQuatroDois|cat:"00a{$localizedTitle}"}
         {/if}
     {/if}
 {/foreach}
+
 
 {assign var=submissionPages value=$publication->getData('pages')}
 
@@ -439,7 +441,33 @@
 {assign var="rec242EDT" value="{$rec242|replace:' ':''}"}
 
 {assign var="rec940AllEDT" value="{$rec940All|replace:' ':''}"}
+<hr>
+{assign var="localizedTitles" value=[]}
+{foreach from=$currentContext->getSupportedLocales() item=locale}
+    {assign var="localizedTitle" value=$publication->getLocalizedTitle($locale)}
+    {if $localizedTitle && $locale != 'pt_BR'}
+        {assign var="primaryTitle" value=$publication->getLocalizedTitle('pt_BR')}
+        {if !$primaryTitle || $localizedTitle != $primaryTitle}
+            {$localizedTitles[] = $localizedTitle}
+            <b>242= </b> 00a{$localizedTitle}<br>
+        {/if}
+    {/if}
+{/foreach}
 
+<b>245= </b>{$doisQuatroCinco}<br>
+
+
+
+
+<hr>
+Idioma de submissão: {$primaryLocale}<br>
+Idioma da submissão<br>
+Idiomas de tradução<br>
+
+
+{$publication->getLocalizedData('locale')}
+
+<hr>
 {** BOTÃO*}
     <button id="downloadButton" class="botao">Baixar Registro MARC</button>
     <style>
@@ -488,5 +516,7 @@
         });
     });
 </script>
+
+
 
 {/if}
