@@ -4,7 +4,7 @@
 <version>
 	<application>ojsMARC</application>
 	<type>plugins.blocks</type>
-	<release>1.0.0.1</release>
+	<release>1.0.0.2</release>
 	<date>2024-04-16</date>
 	<lazy-load>1</lazy-load>
 	<class>ojsMARCPlugin</class>

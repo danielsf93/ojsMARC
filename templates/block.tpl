@@ -169,12 +169,13 @@
     {assign var="resumoPtbr" value="<p> </p>"}
 {/if}
 
-{assign var="resumoPtbrCleaned" value=$resumoPtbr|replace:'<p>':''|replace:'</p>':''}
+{* Remover tags <p> e </p> *}
+{assign var="resumoPtbrCleaned" value=$resumoPtbr|replace:'<p>':''|replace:'</p>':''|replace:'<strong>':''|replace:'</strong>':''|replace:'<sup>':''|replace:'</sup>':''|replace:'<em>':''|replace:'</em>':''|replace:'
+':' '|replace:'<br>':' '|replace:'<br />':' '|replace:'<br/>':' '}
 
 {assign var="rec520POS" value=$rec500CAR + $rec500POS}
 {assign var="rec520CAR" value=sprintf('%04d', strlen($resumoPtbrCleaned) + 5)}
 {assign var="rec520" value="520"|cat:$rec520CAR|cat:sprintf('%05d', $rec520POS)}
-
 
 {assign var="numAutoresAdicionais" value=count($additionalAuthors)}
 {assign var="rec700All" value=''} 
