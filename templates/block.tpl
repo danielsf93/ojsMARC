@@ -442,7 +442,7 @@
 {assign var="rec242EDT" value="{$rec242|replace:' ':''}"}
 
 {assign var="rec940AllEDT" value="{$rec940All|replace:' ':''}"}
-<hr>
+
 {assign var="localizedTitles" value=[]}
 {foreach from=$currentContext->getSupportedLocales() item=locale}
     {assign var="localizedTitle" value=$publication->getLocalizedTitle($locale)}
@@ -450,25 +450,17 @@
         {assign var="primaryTitle" value=$publication->getLocalizedTitle('pt_BR')}
         {if !$primaryTitle || $localizedTitle != $primaryTitle}
             {$localizedTitles[] = $localizedTitle}
-            <b>242= </b> 00a{$localizedTitle}<br>
+           
         {/if}
     {/if}
 {/foreach}
 
-<b>245= </b>{$doisQuatroCinco}<br>
 
 
 
 
-<hr>
-Idioma de submissão: {$primaryLocale}<br>
-Idioma da submissão<br>
-Idiomas de tradução<br>
 
 
-{$publication->getLocalizedData('locale')}
-
-<hr>
 {** BOTÃO*}
     <button id="downloadButton" class="botao">Baixar Registro MARC</button>
     <style>
