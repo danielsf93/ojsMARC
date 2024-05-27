@@ -1,3 +1,5 @@
+#ojsMARC<br>
+
 Manual de utilização dos plugins exportadores de Registro MARC do Portal de Revistas e de Livros Abertos da USP
 
 Portal de Revistas.
