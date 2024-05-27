@@ -1,6 +1,6 @@
 Manual de utilização dos plugins exportadores de Registro MARC do Portal de Revistas e de Livros Abertos da USP
 
-Portal de Revistas.
+
 
 	No Portal de Revistas (OJS-PKP) da USP já está disponível o plugin de exportação de Registros MARC para importação no Aleph. Para utilizá-lo é necessário seguir o passo a passo:
 
@@ -69,37 +69,3 @@ se na publicação original foi organizado como
 Caso o autor seja da USP e essa informação não esteja registrada, contará como autor externo, devendo ser modificado manualmente.
 
 
-Portal de Livros
-
-No Portal de Livros Abertos da USP(na versão atual-3.3.0.8) a ferramenta já está disponível nas publicações, abaixo da ferramenta ‘como citar’
-
-
-
-Neste caso os arquivos serão gerados com o nome de omp.mrc, omp(1).mrc, omp(2).mrc, etc.
-
-Para encontrar os livros relacionados a sua biblioteca/instituição para baixar os registros MARC, pode-se utilizar os seguintes links:
-
-*Busca por unidade (https://www.livrosabertos.abcd.usp.br/portaldelivrosUSP/abcdsearch)
-
-Esta página contém a lista de unidades, e ao clicar, será redirecionado para outra página que contém os livros de sua unidade:
-
-Basta acessar o livro desejado e baixar o Registro MARC. 
-O mesmo pode ser feito através do link de ‘Busca Avançada’ (https://www.livrosabertos.abcd.usp.br/portaldelivrosUSP/catalogSearch) onde o nome da unidade deve ser pesquisado manualmente.
-
-Observações:
-Na futura versão do Portal de Livros Abertos(3.4.0.5) que ainda não está em vigor, a ferramenta de lista de livros por unidade será obtida pelo link https://www.livrosabertos.abcd.usp.br/portaldelivrosUSP/Fullsearch obtendo a seguinte aparência
-
-
-
-E o botão para baixar os Registros MARCs, se encontrarão em abaixo da ferramenta ‘Como Citar’
-
-
-
-No caso do Portal de Livros, os campos obtidos são:
-005, 008, 020, 024, 040, 041, 044, 100, 245, 260, 490, 500, 700(quando houver), 856, 856, 945.
-
-****************************************************************************************************
-Daniel Silva Ferreira
-Monitoria da Divisão de Gestão de Sistemas de Apoio Tecnológico - DGAT
-Agência de Bibliotecas e Coleções Digitais da USP
-Universidade de São Paulo, Maio de 2024.
