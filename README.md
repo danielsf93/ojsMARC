@@ -2,7 +2,7 @@ Manual de utilização dos plugins exportadores de Registro MARC do Portal de Re
 
 Portal de Revistas.
 
-	No Portal de Revistas (OJS-PKP) da USP já está disponível o plugin de exportação de Registros MARC para importação no Aleph. Para utilizá-lo é necessário seguir o passo a passo:
+No Portal de Revistas (OJS-PKP) da USP já está disponível o plugin de exportação de Registros MARC para importação no Aleph. Para utilizá-lo é necessário seguir o passo a passo:
 
 a) Com a conta de administrador/gerente de sua revista, acesse a área de configurações de plugins
 ‘Configurações>Website>Plugins>Plugins instalados’
