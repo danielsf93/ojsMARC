@@ -455,37 +455,54 @@
     {/if}
 {/foreach}
 
-
 <hr>
+{* Texto*}
+{assign var="cincoTresMeia" value=""}
+{assign var="rec536All" value=""}
+{assign var="rec520POS" value=$rec500CAR + $rec500POS}
 
 {if isset($publication) && $publication->getId()|default:false}
     {if $funders.funders|@count > 0}
-        {foreach from=$funders.funders item=funder}
+        {foreach from=$funders.funders item=funder name=funderLoop}
             {if $funder.submission_id == $publication->getId()|escape}
-                {assign var="foundFunders" value=true}
-                Financiador: {$funders.settings[$funder.funder_id]|escape}<br>
+                {assign var="funderDetails" value="a{$funders.settings[$funder.funder_id]|escape}"}
                 
                 {assign var="awards" value="`$funders.awards[$funder.funder_id]|escape`"}
                 {assign var="awardNumbers" value=$awards|explode:";"}
                 
                 {foreach from=$awardNumbers item=number}
-                    N: {$number}<br>
-                {/foreach}<br>
+                    {assign var="funderDetails" value=$funderDetails|cat:"f{$number}"}
+                {/foreach}
+                
+                {assign var="cincoTresMeia" value="$cincoTresMeia {$funderDetails}"}
+
+                {* Calcular CAR e POS para cada financiador *}
+                {assign var="rec536CAR" value=sprintf('%04d', strlen($funderDetails) + 5)}
+                
+                {* Pegar valores do 520 e calcular posição inicial *}
+                {assign var="rec520CAR" value=sprintf('%04d', strlen($resumoPtbrCleaned) + 5)}
+                {assign var="rec520Base" value=substr($rec520, 3, 4)}
+                {assign var="rec520Offset" value=substr($rec520, 7, 5)}
+                {assign var="rec536POS" value=$rec520Base + $rec520Offset}
+                {assign var="rec536" value="536"|cat:$rec536CAR|cat:sprintf('%05d', $rec536POS)}
+                {assign var="rec536All" value="$rec536All $rec536"}
+
+                {* Atualizar rec520POS para o próximo item *}
+                {assign var="rec536POS" value=$rec536POS + strlen($funderDetails) + 5}
             {/if}
         {/foreach}
     {/if}
 {/if}
 
 <hr>
-
-
-
-<b>520= </b>resumo<br>
-<b>536= </b>FUNDERS<br>
-<b>700= </b>add<br>
-
+{$rec520}<br>
+<b>536= </b>{$cincoTresMeia}<br>
+<b>Numeração: </b>{$rec536All}
 
 <hr>
+
+
+
 
 
 
