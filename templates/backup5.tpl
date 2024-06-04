@@ -456,36 +456,8 @@
 {/foreach}
 
 
-<hr>
-
-{if isset($publication) && $publication->getId()|default:false}
-    {if $funders.funders|@count > 0}
-        {foreach from=$funders.funders item=funder}
-            {if $funder.submission_id == $publication->getId()|escape}
-                {assign var="foundFunders" value=true}
-                Financiador: {$funders.settings[$funder.funder_id]|escape}<br>
-                
-                {assign var="awards" value="`$funders.awards[$funder.funder_id]|escape`"}
-                {assign var="awardNumbers" value=$awards|explode:";"}
-                
-                {foreach from=$awardNumbers item=number}
-                    N: {$number}<br>
-                {/foreach}<br>
-            {/if}
-        {/foreach}
-    {/if}
-{/if}
-
-<hr>
 
 
-
-<b>520= </b>resumo<br>
-<b>536= </b>FUNDERS<br>
-<b>700= </b>add<br>
-
-
-<hr>
 
 
 
