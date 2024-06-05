@@ -457,6 +457,7 @@
 
 <hr>
 
+
 {* Inicializar variáveis *}
 {assign var="cincoTresMeia" value=""}
 {assign var="rec536All" value=""}
@@ -477,28 +478,28 @@
                     {assign var="funderDetails" value=$funderDetails|cat:"f{$number}"}
                 {/foreach}
                 
-                {assign var="cincoTresMeia" value="$cincoTresMeia   {$funderDetails}"}
+                {assign var="cincoTresMeia" value="$cincoTresMeia {$funderDetails}"}
 
                 {* Calcular CAR para o financiador atual *}
-                {assign var="rec536CAR" value=sprintf('%04d', strlen($funderDetails) + 3)}
+                {assign var="rec536CAR" value=sprintf('%04d', strlen($funderDetails) + 5)}
                 
                 {* Calcular a posição inicial e gerar a numeração 536 *}
                 {assign var="rec536" value="536"|cat:$rec536CAR|cat:sprintf('%05d', $rec536POS)}
-                {assign var="rec536All" value="$rec536All{$rec536}"}
+                {assign var="rec536All" value="$rec536All $rec536"}
 
                 {* Atualizar posição para o próximo financiador *}
-                {assign var="rec536POS" value=$rec536POS + strlen($funderDetails) + 3}
+                {assign var="rec536POS" value=$rec536POS + strlen($funderDetails) + 5}
             {/if}
         {/foreach}
     {/if}
 {/if}
 
 <hr>
-AAA{$cincoTresMeia|strip}BBB<br>
-CCC{$rec536All|strip}DDD
+{$rec520}<br>
+<b>536= </b>{$cincoTresMeia}<br>
+<b>Numeração: </b>{$rec536All}
 
 <hr>
-
 
 
 
@@ -540,7 +541,7 @@ CCC{$rec536All|strip}DDD
     document.addEventListener('DOMContentLoaded', function() {
         var downloadButton = document.getElementById('downloadButton');
         downloadButton.addEventListener('click', function() {
-            var text = "{$totalcaracteres}nab   2{$ldr}Ia 45  {$rec005|escape:'javascript'}{$rec008|escape:'javascript'}{$rec024|escape:'javascript'}{$rec040|escape:'javascript'}{$rec041|escape:'javascript'}{$rec044|escape:'javascript'}{$rec100|escape:'javascript'}{$rec242EDT|escape:'javascript'}{$rec245|escape:'javascript'}{$rec260|escape:'javascript'}{$rec300|escape:'javascript'}{$rec500|escape:'javascript'}{$rec520|escape:'javascript'}{$rec536All|escape:'javascript'}{$rec7uuAll|escape:'javascript'}{$rec773|escape:'javascript'}{$rec856A|escape:'javascript'}{$rec940AllEDT|escape:'javascript'}{$rec945|escape:'javascript'}{$zeroZeroCinco|escape:'javascript'}{$zeroZeroOito|escape:'javascript'}{$zeroDoisQuatro|escape:'javascript'}{$zeroQuatroZero|escape:'javascript'}{$zeroQuatroUm|escape:'javascript'}{$zeroQuatroQuatro|escape:'javascript'}{$umZeroZero|escape:'javascript'}{$doisQuatroDois|escape:'javascript'}{$doisQuatroCinco|escape:'javascript'}{$doisMeiaZero|escape:'javascript'}{$tresZeroZero|escape:'javascript'}{$cincoZeroZero|escape:'javascript'}{$cincoDoisZero|escape:'javascript'}{$cincoTresMeia|escape:'javascript'}{$additionalAuthorsExport|escape:'javascript'}{$seteSeteTres|escape:'javascript'}{$oitoCincoMeiaA|escape:'javascript'}{$noveQuatroZero|escape:'javascript'}{$noveQuatroCinco|escape:'javascript'}";
+            var text = "{$totalcaracteres}nab   2{$ldr}Ia 45  {$rec005|escape:'javascript'}{$rec008|escape:'javascript'}{$rec024|escape:'javascript'}{$rec040|escape:'javascript'}{$rec041|escape:'javascript'}{$rec044|escape:'javascript'}{$rec100|escape:'javascript'}{$rec242EDT|escape:'javascript'}{$rec245|escape:'javascript'}{$rec260|escape:'javascript'}{$rec300|escape:'javascript'}{$rec500|escape:'javascript'}{$rec520|escape:'javascript'}{$rec7uuAll|escape:'javascript'}{$rec773|escape:'javascript'}{$rec856A|escape:'javascript'}{$rec940AllEDT|escape:'javascript'}{$rec945|escape:'javascript'}{$zeroZeroCinco|escape:'javascript'}{$zeroZeroOito|escape:'javascript'}{$zeroDoisQuatro|escape:'javascript'}{$zeroQuatroZero|escape:'javascript'}{$zeroQuatroUm|escape:'javascript'}{$zeroQuatroQuatro|escape:'javascript'}{$umZeroZero|escape:'javascript'}{$doisQuatroDois|escape:'javascript'}{$doisQuatroCinco|escape:'javascript'}{$doisMeiaZero|escape:'javascript'}{$tresZeroZero|escape:'javascript'}{$cincoZeroZero|escape:'javascript'}{$cincoDoisZero|escape:'javascript'}{$additionalAuthorsExport|escape:'javascript'}{$seteSeteTres|escape:'javascript'}{$oitoCincoMeiaA|escape:'javascript'}{$noveQuatroZero|escape:'javascript'}{$noveQuatroCinco|escape:'javascript'}";
             var fileName = 'ojs.mrc'; // Nome do arquivo a ser baixado
             var blob = new Blob([text], { type: 'text/plain' });
             if (window.navigator.msSaveOrOpenBlob) {
